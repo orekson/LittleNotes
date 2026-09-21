@@ -20,7 +20,7 @@ class PersonalizationTest {
     }
     @Test fun resizedPhotoRoundTripAndLargeImageTilesStayBounded() {
         val text=SpannableStringBuilder("之前\n\uFFFC\n之後")
-        text.setSpan(RichText.sticker(context,"asset:stickers/holo_0.png",480,480,true),3,4,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        text.setSpan(RichText.sticker(context,"asset:stickers/legacy_0.png",480,480,true),3,4,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         val raw=RichText.encode(text)
         val decoded=RichText.decode(context,text.toString(),raw,76,200)
         val span=decoded.getSpans(0,decoded.length,StickerSpan::class.java).single()
@@ -62,14 +62,14 @@ class PersonalizationTest {
         val files=context.assets.list("stickers")!!.filter { it.endsWith(".png") }
         assertEquals(31,files.size)
         files.forEach { file -> val bitmap=ImageFiles.load(context,"asset:stickers/$file"); assertNotNull(file,bitmap); bitmap?.recycle() }
-        val old="""{"version":1,"stickers":[{"at":0,"ref":"asset:stickers/holo_1.png"}]}"""
+        val old="""{"version":1,"stickers":[{"at":0,"ref":"asset:stickers/legacy_1.png"}]}"""
         val decoded=RichText.decode(context,"\uFFFC",old,76)
         val span=decoded.getSpans(0,1,StickerSpan::class.java).single()
         assertEquals(76,span.sizeDp); assertFalse(span.isPhoto)
     }
     @Test fun fullWidthPhotoHitRegionSurvivesFollowingTextWrap() {
         val text=SpannableStringBuilder("\uFFFC後面的文字")
-        val span=RichText.sticker(context,"asset:stickers/holo_0.png",180,180,true)
+        val span=RichText.sticker(context,"asset:stickers/legacy_0.png",180,180,true)
         text.setSpan(span,0,1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         val paint=android.text.TextPaint().apply { textSize=20f }
         val layout=android.text.StaticLayout.Builder.obtain(text,0,text.length,paint,span.drawable.bounds.width()).build()

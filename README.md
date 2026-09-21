@@ -7,7 +7,7 @@ Android 個人筆記 App 與可調整大小的桌面小工具。介面為繁體�
 1. 將交付的 `LittleNotes-1.1.apk` 傳到 Android 手機，開啟安裝。已安裝舊版時直接覆蓋更新。若手機要求，為你用來開啟 APK 的檔案管理器允許「安裝未知應用程式」。
 2. 開啟「小小筆記」，按「寫一篇新筆記」。
 3. 輸入標題與內容。選取文字後套用色彩、彩虹、柔光；沒有選取時會套用整篇。使用「清除樣式」復原一般文字。
-4. 本文下方的文字工具列可左右滑動，下一排是「貼圖」與「桌面預覽」。貼圖選單包含同一素材包全部 31 張小人，也能匯入自己的貼圖。
+4. 本文下方的文字工具列可左右滑動，下一排是「貼圖」與「桌面預覽」。貼圖選單會依安裝的 flavor 顯示 31 張內建素材，也能匯入自己的貼圖。
 5. 按「＋ 圖片」在游標處插入手機照片，使用滑桿或雙指縮放，點「套用」。點筆記中的圖片可再次調整；範圍為 24–480 dp，維持比例並自動適應筆記寬度。圖片與貼圖可如文字一般刪除。
 6. 按「☐ 勾選方框」新增清單項目，接著輸入文字。筆記內和桌面小工具上皆可點方框，完成會呈現綠色勾勾；再點一下可取消。
 7. 選擇奶油／櫻花／海風／星夜背景，或從手機選取照片。「背景淡化」0% 是原圖，100% 淡至底色，不影響文字與貼圖。
@@ -29,16 +29,18 @@ Android 個人筆記 App 與可調整大小的桌面小工具。介面為繁體�
 - 存檔後或重新調整尺寸可能回到文章頂端。背景更新不是持續輪詢。
 - 原始相簿圖片不會修改；App 會保存縮小後的副本。移除小工具不會刪除筆記。
 - 本版沒有雲端同步或匯出備份；解除安裝／清除 App 資料會刪除筆記與匯入圖片。
-- 內建貼圖來源與非官方標示見 `ASSET_SOURCES.md`。這是私人使用版本，素材未確認商業再散布授權。
+- Personal flavor 的內建貼圖來源與非官方標示見 `app/src/personal/docs/ASSET_SOURCES.md`；Play flavor 的公開授權見 `docs/ASSET_SOURCES_PLAY.md`。
 
 ## 建置
 
-工具：JDK 17、Android SDK Platform 35 / Build Tools 35.0.0、Gradle 8.13、AGP 8.11.1、Kotlin 2.1.20。
+工具：JDK 17、Android SDK Platform 36 / Build Tools 36.0.0、Gradle 8.13、AGP 8.11.1、Kotlin 2.1.20。
 
 一般開發環境：使用 Android Studio 開啟此資料夾，設定 SDK 後執行：
 
 ```powershell
-.\gradlew.bat testDebugUnitTest lintDebug assembleDebug
+.\gradlew.bat testPersonalDebugUnitTest testPlayDebugUnitTest
+.\gradlew.bat lintPersonalDebug lintPlayDebug
+.\gradlew.bat assemblePersonalDebug assemblePlayDebug
 ```
 
 本工作區已安裝專案內工具，可執行：
@@ -47,13 +49,13 @@ Android 個人筆記 App 與可調整大小的桌面小工具。介面為繁體�
 .\build-local.ps1
 ```
 
-原始 APK 輸出：`app/build/outputs/apk/debug/app-debug.apk`。
+APK 輸出：`app/build/outputs/apk/personal/debug/app-personal-debug.apk` 或 `app/build/outputs/apk/play/debug/app-play-debug.apk`。
 
 ## 測試
 
 ```powershell
-.\gradlew.bat testDebugUnitTest
-.\gradlew.bat connectedDebugAndroidTest
+.\gradlew.bat testPersonalDebugUnitTest testPlayDebugUnitTest
+.\gradlew.bat assemblePersonalDebugAndroidTest assemblePlayDebugAndroidTest
 ```
 
 裝置測試使用本地 SQLite、真實 StaticLayout、圖片編解碼及 Activity 重建，並非用假資料庫替代。
@@ -68,4 +70,7 @@ Android 個人筆記 App 與可調整大小的桌面小工具。介面為繁體�
 - `rich`：文字樣式、貼圖、背景及長文分段繪製。
 - `widget`：Android 桌面小工具更新與捲動內容。
 - `app/src/test`、`app/src/androidTest`：單元與裝置測試。
+- `app/src/personal`：只放自用版貼圖與私人授權說明。
+- `app/src/play`：只放 Google Play 可公開貼圖與授權資料。
+- `scripts/Export-Play.ps1`：從 Private source 產生不含 Personal flavor 的安全 Play 匯出。
 - `docs/superpowers`：需求、使用者增補及實作計畫。

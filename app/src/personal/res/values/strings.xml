@@ -1,0 +1,10 @@
+<resources>
+    <string name="widget_description">可捲動的個人筆記，搭配私人貼圖、彩色柔光與自訂背景。</string>
+    <string name="sticker_picker_title">私人小人貼圖</string>
+    <string name="sticker_picker_count">%1$d 張私人貼圖 · 可隨文字刪除</string>
+    <string name="sticker_content_description">私人貼圖 %1$d</string>
+    <string name="sticker_source_title">私人貼圖來源與使用說明</string>
+    <string name="sticker_source_message">桌面長按空白處 → 小工具 → 小小筆記，選一篇筆記後長按拉大。\n\n文字工具：選取文字套用顏色、彩虹或柔光；未選取時套用全文。背景淡化只影響背景。\n\n內建貼圖來源：SigStick 的 Hololive Walfie GIF plus 2021（頁面署名 Walfie -K）。角色權利屬相關權利人，本 App 非官方產品。素材授權鏈未獨立確認，供本私人版本使用。</string>
+    <string name="sticker_source_action">查看素材來源</string>
+    <string name="sticker_source_url">https://www.sigstick.com/pack/XDU8ZicGo56Q1iu9Y2Rk</string>
+</resources>

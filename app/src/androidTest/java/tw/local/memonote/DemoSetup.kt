@@ -19,8 +19,8 @@ class DemoSetup: androidx.test.runner.AndroidJUnitRunner() {
         RichText.format(text,0,13){TextStyle(rainbow=true,glow=true)}
         val pink=text.indexOf("小小"); RichText.format(text,pink,pink+14){TextStyle(0xffbf3779.toInt(),false,true)}
         val first=text.indexOf('\uFFFC'); val second=text.indexOf('\uFFFC',first+1)
-        text.setSpan(RichText.sticker(c,"asset:stickers/holo_1.png",76),first,first+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        text.setSpan(RichText.sticker(c,"asset:stickers/holo_0.png",76),second,second+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        text.setSpan(RichText.sticker(c,"asset:stickers/legacy_1.png",76),first,first+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        text.setSpan(RichText.sticker(c,"asset:stickers/legacy_0.png",76),second,second+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         for(at in text.indices) if(text[at]=='☐') { text.replace(at,at+1,"\uFFFC"); text.setSpan(CheckSpan("demo-$at",false,36),at,at+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) }
         val photo=android.graphics.Bitmap.createBitmap(600,360,android.graphics.Bitmap.Config.ARGB_8888)
         val canvas=android.graphics.Canvas(photo); val paint=android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG)

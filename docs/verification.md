@@ -1,5 +1,13 @@
 # 驗證紀錄
 
+## Product Flavors 重構（2026-09-21）
+
+- `testPersonalDebugUnitTest testPlayDebugUnitTest` 成功。
+- `lintPersonalDebug lintPlayDebug` 成功。
+- `assemblePersonalDebug assemblePlayDebug assemblePersonalDebugAndroidTest assemblePlayDebugAndroidTest` 成功。
+- `personal` APK 套件為 `tw.local.memonote`，`play` APK 套件為 `tw.local.memonote.play`；兩者 App 名稱皆為「小小筆記」。
+- 兩個 flavor 各自打包 31 張素材，Play 匯出掃描通過，未包含 `src/personal`、私人素材或產生的 `app/build`。
+
 ## 1.1 驗證（2026-09-21）
 
 - 建置 `testDebugUnitTest lintDebug assembleDebug assembleDebugAndroidTest` 成功；5 項 JVM 測試通過，Lint 0 errors、25 warnings。

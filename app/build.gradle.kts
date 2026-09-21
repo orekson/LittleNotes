@@ -1,14 +1,25 @@
 plugins { id("com.android.application"); id("org.jetbrains.kotlin.android") }
 android {
     namespace = "tw.local.memonote"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         applicationId = "tw.local.memonote"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 2
-        versionName = "1.1"
+        targetSdk = 36
+        versionCode = 3
+        versionName = "1.2"
         testInstrumentationRunner = "tw.local.memonote.DemoSetup"
+    }
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("personal") {
+            dimension = "distribution"
+            versionNameSuffix = "-personal"
+        }
+        create("play") {
+            dimension = "distribution"
+            applicationIdSuffix = ".play"
+        }
     }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     kotlinOptions { jvmTarget = "17" }

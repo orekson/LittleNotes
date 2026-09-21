@@ -22,14 +22,14 @@ class NoteIntegrationTest {
     @Test fun richTextAndStickerSurviveDatabaseReload() {
         val text=SpannableStringBuilder("今天好開心 ✨\n\uFFFC\n最後一行")
         RichText.format(text,0,5){TextStyle(0xffaa3399.toInt(),true,true)}
-        val at=text.indexOf('\uFFFC'); text.setSpan(RichText.sticker(context,"asset:stickers/holo_1.png",76),at,at+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val at=text.indexOf('\uFFFC'); text.setSpan(RichText.sticker(context,"asset:stickers/legacy_1.png",76),at,at+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         val id=NoteStore(context).use { it.save(Note(title="測試",body=text.toString(),formatting=RichText.encode(text),background="sakura",fade=65)) }
         try {
             val stored=NoteStore(context).use { it.find(id)!! }
             val restored=RichText.decode(context,stored.body,stored.formatting,76)
             assertEquals(text.toString(),restored.toString()); assertEquals(65,stored.fade)
             assertEquals(TextStyle(0xffaa3399.toInt(),true,true),restored.getSpans(0,5,PaintSpan::class.java).single().style)
-            assertEquals("asset:stickers/holo_1.png",restored.getSpans(at,at+1,StickerSpan::class.java).single().ref)
+            assertEquals("asset:stickers/legacy_1.png",restored.getSpans(at,at+1,StickerSpan::class.java).single().ref)
         } finally { NoteStore(context).use { it.delete(id) } }
     }
     @Test fun longParagraphTilesPreserveEveryCharacterAndBoundBitmapMemory() {

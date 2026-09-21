@@ -1,5 +1,11 @@
 # 版本紀錄
 
+## Product Flavors 重構
+
+- 共用功能集中在 `app/src/main`，並加入 `personal` 與 `play` flavors。
+- 自用貼圖移到 `app/src/personal`，公開 Twemoji 素材移到 `app/src/play`。
+- 新增 Play 安全匯出與素材掃描腳本，移除重複的 `app_TO_googleplay` 專案。
+
 ## 1.1 · 2026-09-20
 
 - 名稱改為「小小筆記」，沿用原套件 ID，可覆蓋更新並保留筆記。

@@ -38,7 +38,19 @@ object ImageFiles {
     }
     fun load(context: Context,ref: String): Bitmap? = try {
         when {
-            ref.startsWith("asset:") -> context.assets.open(ref.removePrefix("asset:")).use { BitmapFactory.decodeStream(it) }
+            ref.startsWith("asset:") -> {
+                val path = ref.removePrefix("asset:")
+                for (candidate in StickerAssets.assetCandidates(path)) {
+                    try {
+                        context.assets.open(candidate).use { input ->
+                            BitmapFactory.decodeStream(input)?.let { return it }
+                        }
+                    } catch (_: java.io.IOException) {
+                        // Try the next stable candidate for notes saved by an older build.
+                    }
+                }
+                null
+            }
             ref.startsWith("file:") -> {
                 val name=ref.removePrefix("file:")
                 if(name.contains('/') || name.contains('\\') || name.contains("..")) null else BitmapFactory.decodeFile(File(context.filesDir,name).path)

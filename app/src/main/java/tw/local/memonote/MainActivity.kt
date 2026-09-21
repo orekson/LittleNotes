@@ -44,8 +44,10 @@ class MainActivity: Activity() {
         }
         list.addView(Ui.space(this,12)); list.addView(Ui.button(this,"✧  加到桌面小工具") { addWidget() })
         list.addView(Ui.button(this,"貼圖來源與使用說明") {
-            AlertDialog.Builder(this).setTitle("你的私人筆記空間").setMessage("桌面長按空白處 → 小工具 → 小小筆記，選一篇筆記後長按拉大。\n\n文字工具：選取文字套用顏色、彩虹或柔光；未選取時套用全文。背景淡化只影響背景。\n\n內建貼圖來源：SigStick 的 Hololive Walfie GIF plus 2021（頁面署名 Walfie -K）。角色權利屬相關權利人，本 App 非官方產品。素材授權鏈未獨立確認，供本私人版本使用。")
-                .setPositiveButton("知道了",null).setNeutralButton("查看素材來源") { _,_-> startActivity(Intent(Intent.ACTION_VIEW,android.net.Uri.parse("https://www.sigstick.com/pack/XDU8ZicGo56Q1iu9Y2Rk"))) }.show()
+            AlertDialog.Builder(this).setTitle(getString(R.string.sticker_source_title)).setMessage(getString(R.string.sticker_source_message))
+                .setPositiveButton("知道了",null).setNeutralButton(getString(R.string.sticker_source_action)) { _,_->
+                    startActivity(Intent(Intent.ACTION_VIEW,android.net.Uri.parse(getString(R.string.sticker_source_url))))
+                }.show()
         })
     }
     private fun addWidget() {
