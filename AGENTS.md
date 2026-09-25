@@ -25,3 +25,7 @@
 - 絕對不能把 `src/personal` 匯出到 Public 版本。
 - 絕對不能把 Hololive、Walfie 或相關私人素材、檔名、來源文件與文字匯出到 Public 版本。
 - Public 匯出必須使用既有的安全匯出與掃描流程，並排除 Private repository 的 Git 歷史、build 產物與簽章檔。若安全掃描、build、test、lint已在本次工作中成功通過，後續步驟不要重複執行，除非相關原始碼或匯出內容有再次變更
+
+## Git 提交訊息
+
+- Git commit 訊息使用繁體中文，簡短描述新增或修改的功能。
