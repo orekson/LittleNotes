@@ -8,12 +8,16 @@ import android.text.*
 import android.view.*
 import android.widget.*
 import tw.local.memonote.data.*
+import tw.local.memonote.model.OrderedListEditor
 import tw.local.memonote.model.TextStyle
 import tw.local.memonote.rich.*
 import tw.local.memonote.ui.*
 import tw.local.memonote.widget.NoteWidgetProvider
 
 class EditorActivity: Activity() {
+    private lateinit var categoryInput: EditText
+    private var vaultPassword: CharArray? = null
+    private var vaultSession: String? = null
     private lateinit var titleInput: EditText
     private lateinit var body: EditText
     private lateinit var paper: LinearLayout
@@ -26,11 +30,67 @@ class EditorActivity: Activity() {
     private var draftKey=java.util.UUID.randomUUID().toString()
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
-        val restored=try { state?.getString("draftKey")?.let { draftKey=it; DraftFiles.read(this,it) } }
+        draftKey = state?.getString("draftKey") ?: draftKey
+        val stored = try {
+            NoteStore(this).use { it.find(intent.getLongExtra("noteId",0)) } ?: Note()
+        } catch(e: Exception) {
+            Ui.toast(this,"無法開啟筆記"); finish(); return
+        }
+        if(stored.isLocked) {
+            lockedGate(stored,state)
+            return
+        }
+        val restored = try { state?.getString("draftKey")?.let { DraftFiles.read(this,it) } }
         catch(e: Exception) { Ui.toast(this,"無法還原草稿，請重新開啟筆記"); finish(); return }
-        original=try { restored?.first ?: NoteStore(this).use { it.find(intent.getLongExtra("noteId",0)) } ?: Note() }
-        catch(e: Exception) { Ui.toast(this,"無法開啟筆記"); finish(); return }
-        val note=restored?.second ?: original
+        original = restored?.first ?: stored
+        render(restored?.second ?: original,state)
+    }
+
+    private fun lockedGate(stored: Note,state: Bundle?) {
+        val root = Ui.root(this)
+        val content = Ui.column(this); Ui.pad(content,24); root.addView(content)
+        content.addView(Ui.label(this,"🔒 加密筆記",26f,bold=true))
+        content.addView(Ui.space(this,12))
+        content.addView(Ui.label(this,"輸入密碼後才能檢視和編輯。忘記密碼就無法還原。",15f,Ui.muted))
+        content.addView(Ui.space(this,20))
+        content.addView(Ui.button(this,"輸入密碼",true) { askUnlock(stored,state) })
+        content.addView(Ui.button(this,"返回筆記列表") { finish() })
+        askUnlock(stored,state)
+    }
+
+    private fun askUnlock(stored: Note,state: Bundle?) {
+        PasswordDialogs.ask(this,"解鎖筆記","密碼只用於解鎖這篇筆記；忘記密碼就無法還原。",false) { password ->
+            val session = java.util.UUID.randomUUID().toString()
+            val progress = AlertDialog.Builder(this).setTitle("正在解鎖")
+                .setView(ProgressBar(this)).setCancelable(false).create()
+            progress.show()
+            Thread {
+                val result = runCatching {
+                    val saved = VaultRepository.open(this,stored,password,session)
+                    val restored = try {
+                        state?.getString("draftKey")?.takeIf { DraftFiles.hasProtected(this,it) }
+                            ?.let { DraftFiles.readProtected(this,it,stored.id,password,session) }
+                    } catch (_: Exception) { null }
+                    restored ?: (saved to saved)
+                }
+                runOnUiThread {
+                    progress.dismiss()
+                    result.onSuccess { pair ->
+                        vaultPassword = password
+                        vaultSession = session
+                        original = pair.first
+                        render(pair.second,state)
+                    }.onFailure {
+                        password.fill('\u0000')
+                        VaultMedia.clear(session)
+                        Ui.toast(this,"解鎖失敗：密碼錯誤或資料損壞")
+                    }
+                }
+            }.start()
+        }
+    }
+
+    private fun render(note: Note,state: Bundle?) {
         background=note.background; fade=note.fade
         pendingStart=state?.getInt("pendingStart") ?: 0; pendingEnd=state?.getInt("pendingEnd") ?: 0
         val root=Ui.root(this)
@@ -41,7 +101,12 @@ class EditorActivity: Activity() {
         val scroll=ScrollView(this).apply { isFillViewport=true }
         val content=Ui.column(this); Ui.pad(content,20); scroll.addView(content); root.addView(scroll,LinearLayout.LayoutParams(-1,0,1f))
         titleInput=EditText(this).apply { isSaveEnabled=false; hint="給這篇筆記一個名字"; textSize=24f; setTextColor(Ui.ink); backgroundTintList=android.content.res.ColorStateList.valueOf(Ui.purple); isSingleLine=true; filters=arrayOf(InputFilter.LengthFilter(160)); setText(note.title) }
-        content.addView(titleInput); content.addView(Ui.space(this,10))
+        content.addView(titleInput)
+        categoryInput=EditText(this).apply {
+            isSaveEnabled=false; hint="分類（可留空）"; textSize=15f; setTextColor(Ui.ink)
+            isSingleLine=true; filters=arrayOf(InputFilter.LengthFilter(80)); setText(note.category)
+        }
+        content.addView(categoryInput); content.addView(Ui.space(this,10))
         val tools=Ui.row(this)
         val colors=listOf("墨" to 0xff302b3e.toInt(),"莓" to 0xffd43375.toInt(),"紫" to 0xff8440cc.toInt(),"藍" to 0xff2371c7.toInt(),"綠" to 0xff10846f.toInt(),"金" to 0xffb2730a.toInt(),"白" to 0xffffffff.toInt())
         colors.forEach { (name,color) -> tools.addView(Ui.button(this,name) { format { it.copy(color=color,rainbow=false) } }.apply { setTextColor(color); contentDescription="文字顏色：$name" },LinearLayout.LayoutParams(Ui.dp(this,54),-2)) }
@@ -58,6 +123,58 @@ class EditorActivity: Activity() {
             isSaveEnabled=false
             setText(RichText.decode(this@EditorActivity,note.body,note.formatting,Ui.dp(this@EditorActivity,76)))
         }
+        var numberingBeforeText = ""
+        var numberingChangeStart = 0
+        var numberingRemovedCount = 0
+        var numberingInsertedCount = 0
+        var numberingInsertedText = ""
+        var adjustingNumbering = false
+        body.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                if (adjustingNumbering) return
+                numberingBeforeText = if (count > 0) s?.toString().orEmpty() else ""
+                numberingChangeStart = start
+                numberingRemovedCount = count
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (adjustingNumbering || s == null) return
+                numberingChangeStart = start
+                numberingInsertedCount = count
+                numberingInsertedText = if (count > 0) s.subSequence(start, start + count).toString() else ""
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                if (adjustingNumbering || editable == null) return
+                val enterAt = if (numberingInsertedCount == 1 && numberingInsertedText == "\n") {
+                    numberingChangeStart
+                } else {
+                    null
+                }
+                val plan = OrderedListEditor.plan(
+                    editable.toString(),
+                    body.selectionStart.coerceAtLeast(0),
+                    enterAt,
+                    OrderedListEditor.UserEdit(
+                        beforeText = numberingBeforeText,
+                        start = numberingChangeStart,
+                        removedCount = numberingRemovedCount,
+                        insertedText = numberingInsertedText
+                    )
+                )
+                if (plan.stages.isEmpty()) return
+
+                adjustingNumbering = true
+                try {
+                    plan.stages.forEach { stage ->
+                        stage.forEach { edit -> editable.replace(edit.start, edit.end, edit.text) }
+                    }
+                    body.setSelection(plan.selection.coerceIn(0, editable.length))
+                } finally {
+                    adjustingNumbering = false
+                }
+            }
+        })
         paper.addView(body,LinearLayout.LayoutParams(-1,-2)); content.addView(paper)
         body.addOnLayoutChangeListener { _,l,_,r,_,ol,_,or,_ -> if(r-l!=or-ol) fitMedia() }
         var touchX=0f; var touchY=0f
@@ -109,8 +226,8 @@ class EditorActivity: Activity() {
         body.setSelection((state?.getInt("cursor") ?: body.length()).coerceIn(0,body.length()))
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
-    private fun draft()=original.copy(title=titleInput.text.toString(),body=body.text.toString(),formatting=RichText.encode(body.text),background=background,fade=fade)
-    private fun changed(): Boolean { val n=draft(); return n.title!=original.title || n.body!=original.body || n.background!=original.background || n.fade!=original.fade || n.formatting!=RichText.encode(RichText.decode(this,original.body,original.formatting,Ui.dp(this,76))) }
+    private fun draft()=original.copy(title=titleInput.text.toString(),body=body.text.toString(),formatting=RichText.encode(body.text),background=background,fade=fade,category=categoryInput.text.toString())
+    private fun changed(): Boolean { val n=draft(); return n.title!=original.title || n.body!=original.body || n.background!=original.background || n.fade!=original.fade || n.category!=original.category || n.formatting!=RichText.encode(RichText.decode(this,original.body,original.formatting,Ui.dp(this,76))) }
     private fun format(change: (TextStyle)->TextStyle) {
         val a=body.selectionStart.coerceAtLeast(0); val b=body.selectionEnd.coerceAtLeast(0)
         RichText.format(body.text,if(a==b) 0 else minOf(a,b),if(a==b) body.length() else maxOf(a,b),change); body.invalidate()
@@ -156,7 +273,7 @@ class EditorActivity: Activity() {
     override fun onActivityResult(request: Int,result: Int,data: Intent?) {
         super.onActivityResult(request,result,data)
         if(result!=RESULT_OK || data?.data==null) return
-        try { val ref=ImageFiles.import(this,data.data!!,request==12); when(request) { 12->insertSticker(ref); 13->ImageSizeDialog.show(this,ref,220) { insertPhoto(ref,it) }; else->{ background=ref; refreshBackground() } } }
+        try { val ref=ImageFiles.import(this,data.data!!,request==12,vaultSession); when(request) { 12->insertSticker(ref); 13->ImageSizeDialog.show(this,ref,220) { insertPhoto(ref,it) }; else->{ background=ref; refreshBackground() } } }
         catch(e: Exception) { Ui.toast(this,"圖片匯入失敗：${e.message ?: "請換一張圖片"}") }
     }
     private fun refreshBackground() {
@@ -165,12 +282,39 @@ class EditorActivity: Activity() {
         paper.background=BitmapDrawable(resources,NoteRenderer.background(this,background,fade,w,h))
     }
     private fun preview() {
-        try { val file=java.io.File(cacheDir,"preview.json"); file.writeText(draft().toJson()); startActivity(Intent(this,PreviewActivity::class.java)) }
-        catch(e: Exception) { Ui.toast(this,"無法產生預覽，請重試") }
+        try {
+            val intent=Intent(this,PreviewActivity::class.java)
+            if(vaultSession!=null) {
+                intent.putExtra("previewToken",PreviewCache.put(draft()))
+            } else {
+                java.io.File(cacheDir,"preview.json").writeText(draft().toJson())
+            }
+            startActivity(intent)
+        } catch(e: Exception) { Ui.toast(this,"無法產生預覽，請重試") }
     }
     private fun save() {
         val note=draft()
         if(note.title.isBlank() && note.body.isBlank() && note.id==0L) { Ui.toast(this,"先寫下標題或內容吧"); return }
+        val password=vaultPassword
+        if(password!=null) {
+            val progress=AlertDialog.Builder(this).setTitle("正在儲存加密筆記")
+                .setView(ProgressBar(this)).setCancelable(false).create()
+            progress.show()
+            Thread {
+                val result=runCatching { VaultRepository.saveEdited(this,note,password) }
+                runOnUiThread {
+                    progress.dismiss()
+                    result.onSuccess {
+                        original=note
+                        NoteWidgetProvider.updateAll(this)
+                        setResult(RESULT_OK,Intent().putExtra("noteId",note.id))
+                        Ui.toast(this,"加密筆記已儲存")
+                        finish()
+                    }.onFailure { Ui.toast(this,"儲存失敗，輸入內容已保留") }
+                }
+            }.start()
+            return
+        }
         try { val id=NoteStore(this).use { it.saveFromEditor(original,note) }; original=note.copy(id=id); NoteWidgetProvider.updateAll(this); setResult(RESULT_OK,Intent().putExtra("noteId",id)); Ui.toast(this,"已儲存，桌面筆記已更新"); finish() }
         catch(e: Exception) { Ui.toast(this,"儲存失敗，輸入內容已保留，請重試") }
     }
@@ -183,12 +327,23 @@ class EditorActivity: Activity() {
     }
     override fun onBackPressed()=leave()
     override fun onSaveInstanceState(out: Bundle) {
+        out.putString("draftKey",draftKey)
         if(ready) {
-            try { DraftFiles.write(this,draftKey,original,draft()); out.putString("draftKey",draftKey) }
+            try {
+                val password=vaultPassword
+                if(password==null) DraftFiles.write(this,draftKey,original,draft())
+                else DraftFiles.writeProtected(this,draftKey,original,draft(),password)
+                out.putString("draftKey",draftKey)
+            }
             catch(e: Exception) { Ui.toast(this,"草稿暫存失敗，請先儲存筆記") }
             out.putInt("cursor",body.selectionStart); out.putInt("pendingStart",pendingStart); out.putInt("pendingEnd",pendingEnd)
         }
         super.onSaveInstanceState(out)
     }
-    override fun onDestroy() { if(isFinishing) DraftFiles.delete(this,draftKey); super.onDestroy() }
+    override fun onDestroy() {
+        if(isFinishing) DraftFiles.delete(this,draftKey)
+        vaultSession?.let { VaultMedia.clear(it) }
+        vaultPassword?.fill('\u0000')
+        super.onDestroy()
+    }
 }

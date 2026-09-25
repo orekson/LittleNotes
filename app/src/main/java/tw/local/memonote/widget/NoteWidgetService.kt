@@ -17,7 +17,7 @@ class NoteWidgetService: RemoteViewsService() {
         private fun reload() {
             renderer=try {
                 val note=NoteStore(this@NoteWidgetService).use { it.find(NoteWidgetProvider.noteId(this@NoteWidgetService,widgetId)) }
-                note?.let {
+                note?.takeUnless { it.isLocked }?.let {
                     val dp=NoteWidgetProvider.widthDp(this@NoteWidgetService,widgetId)
                     val width=(dp*1.5f).toInt().coerceAtMost(540)
                     NoteRenderer(this@NoteWidgetService,it,width,width.toFloat()/dp)

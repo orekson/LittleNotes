@@ -6,13 +6,18 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import tw.local.memonote.data.Note
+import tw.local.memonote.data.PreviewCache
 import tw.local.memonote.rich.NoteRenderer
 import tw.local.memonote.ui.Ui
 
 class PreviewActivity: Activity() {
     override fun onCreate(state: Bundle?) {
         super.onCreate(state)
-        val note=try { Note.fromJson(java.io.File(cacheDir,"preview.json").readText()) } catch(e: Exception) { finish(); return }
+        val note=try {
+            val token=intent.getStringExtra("previewToken")
+            if(token!=null) PreviewCache.take(token) ?: error("預覽已過期")
+            else Note.fromJson(java.io.File(cacheDir,"preview.json").readText())
+        } catch(e: Exception) { finish(); return }
         val root=Ui.root(this)
         val bar=Ui.row(this); Ui.pad(bar,12); bar.addView(Ui.button(this,"返回編輯") { finish() }); bar.addView(Ui.label(this,"小工具預覽",18f,bold=true)); root.addView(bar)
         root.addView(Ui.label(this,"  實際尺寸可在桌面長按調整；長文可上下捲動。",12f,Ui.muted))
