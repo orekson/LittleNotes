@@ -6,8 +6,8 @@ android {
         applicationId = "tw.local.memonote"
         minSdk = 26
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3.0"
         testInstrumentationRunner = "tw.local.memonote.DemoSetup"
     }
     flavorDimensions += "distribution"
