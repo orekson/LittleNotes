@@ -136,7 +136,11 @@ class CloudProfileActivity : LocalizedActivity() {
                 .show()
         })
         content.addView(Ui.space(this, 12))
-        BottomNavigation.add(this, root, true, { finish() }, {})
+        BottomNavigation.add(this, root, BottomNavigation.Tab.PROFILE, {
+            startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        }, {
+            startActivity(Intent(this, DateScheduleActivity::class.java))
+        }, {})
     }
 
     private fun authorize(action: Int) {

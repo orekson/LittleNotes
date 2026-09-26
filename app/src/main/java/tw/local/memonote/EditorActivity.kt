@@ -48,6 +48,11 @@ class EditorActivity: LocalizedActivity() {
         render(restored?.second ?: original,state)
     }
 
+    override fun onResume() {
+        super.onResume()
+        tw.local.memonote.reminder.ReminderScheduler.safeSync(this)
+    }
+
     private fun lockedGate(stored: Note,state: Bundle?) {
         val root = Ui.root(this)
         val content = Ui.column(this); Ui.pad(content,24); root.addView(content)
@@ -193,6 +198,8 @@ class EditorActivity: LocalizedActivity() {
                     val check=body.text.getSpans(hit,hit+1,CheckSpan::class.java).firstOrNull()
                     val photo=body.text.getSpans(hit,hit+1,StickerSpan::class.java).firstOrNull { it.isPhoto }
                     if(check!=null) { check.checked=!check.checked; body.invalidate(); return@setOnTouchListener true }
+                    val reminder=body.text.getSpans(hit,hit+1,ReminderSpan::class.java).firstOrNull()
+                    if(reminder!=null) { editReminder(reminder); return@setOnTouchListener true }
                     if(photo!=null) { resizePhoto(photo); return@setOnTouchListener true }
                 }
             }
@@ -201,13 +208,50 @@ class EditorActivity: LocalizedActivity() {
         paper.addOnLayoutChangeListener { _,l,t,r,b,ol,ot,or,ob -> if(r-l!=or-ol || b-t!=ob-ot) refreshBackground() }
         content.addView(Ui.label(this,"選字上色；未選取時套用整篇",12f,Ui.muted))
         content.addView(HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled=false; addView(tools) })
-        val actions=Ui.row(this)
-        actions.addView(Ui.button(this,"✿ 貼圖") { rememberSelection(); StickerPicker.show(this,{ insertSticker(it) },{ pickImage(12) }) },LinearLayout.LayoutParams(0,-2,1f))
-        actions.addView(Ui.button(this,"✧ 桌面預覽") { preview() },LinearLayout.LayoutParams(0,-2,1f)); content.addView(actions)
-        val inserts=Ui.row(this)
-        inserts.addView(Ui.button(this,"＋ 圖片") { rememberSelection(); pickImage(13) },LinearLayout.LayoutParams(0,-2,1f))
-        inserts.addView(Ui.button(this,"☐ 勾選方框") { insertCheck() },LinearLayout.LayoutParams(0,-2,1f)); content.addView(inserts)
-        content.addView(Ui.label(this,"點圖片可再縮放；點方框切換完成狀態。",12f,Ui.muted))
+        val pager = HorizontalScrollView(this).apply {
+            isHorizontalScrollBarEnabled = false
+            isFillViewport = true
+        }
+        val pages = Ui.row(this)
+        fun actionPage(): LinearLayout = Ui.column(this).also { pages.addView(it) }
+        val more = actionPage()
+        val moreTop = Ui.row(this)
+        moreTop.addView(Ui.button(this,"✧ 桌面預覽") { preview() },
+            LinearLayout.LayoutParams(0,-2,1f))
+        moreTop.addView(Ui.button(this,"＋ 預留功能") {}.apply { isEnabled=false },
+            LinearLayout.LayoutParams(0,-2,1f))
+        more.addView(moreTop)
+        val moreBottom = Ui.row(this)
+        repeat(2) {
+            moreBottom.addView(Ui.button(this,"＋ 預留功能") {}.apply { isEnabled=false },
+                LinearLayout.LayoutParams(0,-2,1f))
+        }
+        more.addView(moreBottom)
+        val primary = actionPage()
+        val actions = Ui.row(this)
+        actions.addView(Ui.button(this,"✿ 貼圖") {
+            rememberSelection(); StickerPicker.show(this,{ insertSticker(it) },{ pickImage(12) })
+        },LinearLayout.LayoutParams(0,-2,1f))
+        actions.addView(Ui.button(this,"⏰ 時間提醒") { insertReminder() },
+            LinearLayout.LayoutParams(0,-2,1f))
+        primary.addView(actions)
+        val inserts = Ui.row(this)
+        inserts.addView(Ui.button(this,"＋ 圖片") {
+            rememberSelection(); pickImage(13)
+        },LinearLayout.LayoutParams(0,-2,1f))
+        inserts.addView(Ui.button(this,"☐ 勾選方框") { insertCheck() },
+            LinearLayout.LayoutParams(0,-2,1f))
+        primary.addView(inserts)
+        pager.addView(pages)
+        content.addView(pager)
+        pager.post {
+            val width = pager.width
+            more.layoutParams = more.layoutParams.apply { this.width = width }
+            primary.layoutParams = primary.layoutParams.apply { this.width = width }
+            pager.post { pager.scrollTo(width, 0) }
+        }
+        content.addView(Ui.label(this,"向右滑可看到桌面預覽與更多欄位。",12f,Ui.muted))
+        content.addView(Ui.label(this,"點圖片可再縮放；點方框切換完成狀態；點提醒時間可修改。",12f,Ui.muted))
         content.addView(Ui.space(this,16)); content.addView(Ui.label(this,"背景，換一種心情",18f,bold=true))
         val backgrounds=Ui.row(this)
         listOf("奶油" to "paper","櫻花" to "sakura","海風" to "ocean","星夜" to "night").forEach { (label,ref) -> backgrounds.addView(Ui.button(this,label) { background=ref; refreshBackground() },LinearLayout.LayoutParams(0,-2,1f)) }
@@ -267,6 +311,109 @@ class EditorActivity: LocalizedActivity() {
         if(body.length()-(b-a)+inserted.length>100000) { Ui.toast(this,"這篇筆記已達字數上限"); return }
         body.text.replace(a,b,inserted); val at=a+prefix.length
         body.text.setSpan(CheckSpan(java.util.UUID.randomUUID().toString(),false,Ui.dp(this,36)),at,at+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); body.setSelection(at+2)
+    }
+    private fun insertReminder() {
+        if(vaultPassword!=null) {
+            AlertDialog.Builder(this)
+                .setTitle(AppLanguage.text(this,"加密筆記的提醒"))
+                .setMessage(AppLanguage.text(this,
+                    "為保護加密內容，鎖定期間無法在背景顯示提醒。請先解除加密再設定提醒。"))
+                .setPositiveButton(AppLanguage.text(this,"知道了"),null).show()
+            return
+        }
+        rememberSelection()
+        chooseReminderTime(null)
+    }
+    private fun editReminder(span: ReminderSpan) {
+        val label=java.text.SimpleDateFormat("yyyy/MM/dd HH:mm",AppLanguage.locale(this))
+            .format(java.util.Date(span.timeMillis))
+        AlertDialog.Builder(this)
+            .setTitle(AppLanguage.format(this,"提醒時間：%1\$s",label))
+            .setItems(arrayOf(AppLanguage.text(this,"修改時間"),AppLanguage.text(this,"刪除提醒"))) { _,which ->
+                if(which==0) chooseReminderTime(span)
+                else {
+                    val at=body.text.getSpanStart(span)
+                    if(at>=0) {
+                        val end=if(at+1<body.length() && body.text[at+1]==' ') at+2 else at+1
+                        body.text.delete(at,end)
+                    }
+                }
+            }
+            .setNegativeButton(AppLanguage.text(this,"取消"),null).show()
+    }
+    private fun chooseReminderTime(existing: ReminderSpan?) {
+        val initial=java.util.Calendar.getInstance().apply {
+            timeInMillis=existing?.timeMillis ?: System.currentTimeMillis()+3_600_000L
+        }
+        val picker=DatePickerDialog(this,{ _,year,month,day ->
+            TimePickerDialog(this,{ _,hour,minute ->
+                val chosen=java.util.Calendar.getInstance().apply {
+                    set(year,month,day,hour,minute); set(java.util.Calendar.SECOND,0)
+                    set(java.util.Calendar.MILLISECOND,0)
+                }.timeInMillis
+                if(chosen<=System.currentTimeMillis()) {
+                    Ui.toast(this,"請選擇未來的日期和時間")
+                } else if(existing==null) {
+                    val at=pendingStart.coerceIn(0,body.length())
+                    if(body.length()+2>100000) {
+                        Ui.toast(this,"這篇筆記已達字數上限")
+                    } else {
+                        body.text.insert(at,"\uFFFC ")
+                        body.text.setSpan(ReminderSpan(java.util.UUID.randomUUID().toString(),chosen),
+                            at,at+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        body.setSelection(at+2)
+                        askReminderPermissions()
+                        Ui.toast(this,"儲存筆記後啟用提醒")
+                    }
+                } else {
+                    val at=body.text.getSpanStart(existing)
+                    if(at>=0) {
+                        body.text.removeSpan(existing)
+                        body.text.setSpan(ReminderSpan(existing.id,chosen),
+                            at,at+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        body.invalidate()
+                        askReminderPermissions()
+                    }
+                }
+            },initial.get(java.util.Calendar.HOUR_OF_DAY),
+                initial.get(java.util.Calendar.MINUTE),true).show()
+        },initial.get(java.util.Calendar.YEAR),initial.get(java.util.Calendar.MONTH),
+            initial.get(java.util.Calendar.DAY_OF_MONTH))
+        picker.datePicker.minDate=System.currentTimeMillis()-86_400_000L
+        picker.show()
+    }
+    private fun askReminderPermissions() {
+        if(android.os.Build.VERSION.SDK_INT>=33 &&
+            checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)!=
+                android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),910)
+            return
+        }
+        askExactAlarmPermission()
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults)
+        if(requestCode==910) {
+            if(grantResults.firstOrNull()==android.content.pm.PackageManager.PERMISSION_GRANTED)
+                askExactAlarmPermission()
+            else Ui.toast(this,"未允許通知，提醒不會顯示；可到系統設定開啟。")
+        }
+    }
+    private fun askExactAlarmPermission() {
+        if(!tw.local.memonote.reminder.ReminderScheduler.exactAllowed(this)) {
+            AlertDialog.Builder(this)
+                .setTitle(AppLanguage.text(this,"允許準時提醒"))
+                .setMessage(AppLanguage.text(this,
+                    "請在系統設定允許精準鬧鐘；若不允許，提醒仍會排程，但可能較晚出現。"))
+                .setPositiveButton(AppLanguage.text(this,"前往設定")) { _,_ ->
+                    runCatching {
+                        startActivity(Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                            android.net.Uri.parse("package:$packageName")))
+                    }
+                }
+                .setNegativeButton(AppLanguage.text(this,"稍後"),null).show()
+        }
     }
     private fun pickImage(request: Int) {
         try { startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT).apply { type="image/*"; addCategory(Intent.CATEGORY_OPENABLE) },request) }

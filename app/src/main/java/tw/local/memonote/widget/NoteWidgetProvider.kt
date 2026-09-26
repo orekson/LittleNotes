@@ -28,9 +28,9 @@ class NoteWidgetProvider: AppWidgetProvider() {
         }
         super.onReceive(context,intent)
     }
-    override fun onUpdate(context: Context,manager: AppWidgetManager,ids: IntArray) { ids.forEach { update(context,it) } }
+    override fun onUpdate(context: Context,manager: AppWidgetManager,ids: IntArray) { DateWidgetSchedule.safeRefresh(context); ids.forEach { update(context,it) } }
     override fun onAppWidgetOptionsChanged(context: Context,manager: AppWidgetManager,id: Int,options: Bundle) { update(context,id) }
-    override fun onDeleted(context: Context,ids: IntArray) { val prefs=context.getSharedPreferences("widgets",Context.MODE_PRIVATE).edit(); ids.forEach { prefs.remove(it.toString()) }; prefs.apply() }
+    override fun onDeleted(context: Context,ids: IntArray) { val prefs=context.getSharedPreferences("widgets",Context.MODE_PRIVATE).edit(); ids.forEach { prefs.remove(it.toString()) }; prefs.apply(); DateWidgetSchedule.forget(context,ids) }
     companion object {
         const val ACTION_TOGGLE="tw.local.memonote.TOGGLE_CHECK"
         fun noteId(context: Context,widgetId: Int)=context.getSharedPreferences("widgets",Context.MODE_PRIVATE).getLong(widgetId.toString(),0)
@@ -46,7 +46,7 @@ class NoteWidgetProvider: AppWidgetProvider() {
                 val manager=AppWidgetManager.getInstance(context)
                 val note=NoteStore(context).use { it.find(noteId(context,id)) }
                 val views=RemoteViews(context.packageName,R.layout.note_widget)
-                views.setTextViewText(R.id.widget_title,note?.localizedDisplayTitle(context) ?: context.getString(R.string.app_name))
+                views.setTextViewText(R.id.widget_title,note?.localizedDisplayTitle(context) ?: AppLanguage.wrap(context).getString(R.string.app_name))
                 val configure=Intent(context,WidgetConfigActivity::class.java).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id)
                 views.setOnClickPendingIntent(R.id.widget_choose,PendingIntent.getActivity(context,id*2,configure,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
                 val messageTarget=if(note?.isLocked==true) Intent(context,EditorActivity::class.java).putExtra("noteId",note.id) else configure

@@ -5,10 +5,18 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import tw.local.memonote.cloud.CloudBackupJob
+import tw.local.memonote.reminder.ReminderScheduler
+import tw.local.memonote.widget.DateWidgetSchedule
 
 class NoteStore(context: Context) : SQLiteOpenHelper(context.applicationContext, "notes.db", null, 2) {
     private val appContext = context.applicationContext
-    private fun changed() { runCatching { CloudBackupJob.schedule(appContext) } }
+    private fun changed() {
+        runCatching { CloudBackupJob.schedule(appContext) }
+        android.os.Handler(android.os.Looper.getMainLooper()).post {
+            ReminderScheduler.safeSync(appContext)
+            DateWidgetSchedule.safeRefresh(appContext)
+        }
+    }
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             "CREATE TABLE notes (" +

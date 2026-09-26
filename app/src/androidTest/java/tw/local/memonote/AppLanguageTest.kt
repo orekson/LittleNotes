@@ -24,10 +24,15 @@ class AppLanguageTest {
                 "ko" to "취소",
                 "es" to "Cancelar"
             )
+            val titles = mapOf("en" to "Little Notes", "ja" to "ちいさなノート",
+                "ko" to "작은 노트", "es" to "Pequeñas notas")
             samples.forEach { (language, expected) ->
                 AppLanguage.set(context, language)
                 assertEquals(language, AppLanguage.code(context))
                 assertEquals(expected, AppLanguage.text(context, "取消"))
+                assertEquals(titles[language],
+                    AppLanguage.wrap(context).getString(R.string.app_name))
+                assertNotEquals("▦  日期", AppLanguage.text(context, "▦  日期"))
                 assertEquals("取消", Note(title = "取消").localizedDisplayTitle(context))
                 assertNotEquals("未命名筆記", Note().localizedDisplayTitle(context))
                 assertNotEquals(flavorTitle,

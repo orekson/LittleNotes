@@ -9,4 +9,6 @@ The connected Google account name, backup status, and backup password encrypted 
 
 You can also export or import an encrypted .lnbackup through the Android system file picker. You choose where it is stored.
 
+Note reminders are scheduled on your device. At the chosen time, an Android notification may show the full line containing the reminder; you can manage notifications in system settings. Reminder times are included with notes in encrypted backups. Widget date assignments remain only on this device. Locked encrypted notes do not show content in reminders.
+
 For privacy questions, use the developer contact details on the Google Play listing.

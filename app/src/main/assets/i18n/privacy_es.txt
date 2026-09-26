@@ -9,4 +9,6 @@ El nombre de la cuenta de Google conectada, el estado de la copia y la contrase�
 
 También puedes exportar o importar un archivo .lnbackup cifrado mediante el selector de archivos del sistema Android. Tú eliges dónde guardarlo.
 
+Los recordatorios se programan en el dispositivo. A la hora indicada, una notificación de Android puede mostrar toda la línea que contiene el recordatorio; puedes gestionar las notificaciones en los ajustes del sistema. Las horas de los recordatorios se incluyen con las notas en las copias cifradas. Las fechas asignadas a los widgets solo se guardan en este dispositivo. Las notas cifradas bloqueadas no muestran su contenido en recordatorios.
+
 Si tienes preguntas de privacidad, utiliza los datos de contacto del desarrollador en la ficha de Google Play.

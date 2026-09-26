@@ -34,13 +34,13 @@ class MainActivity : LocalizedActivity() {
     private var pendingBackupPassword: CharArray? = null
 
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) }
-    override fun onResume() { super.onResume(); showNotes() }
+    override fun onResume() { super.onResume(); tw.local.memonote.widget.DateWidgetSchedule.safeRefresh(this); tw.local.memonote.reminder.ReminderScheduler.safeSync(this); showNotes() }
 
     private fun showNotes() {
         val root = Ui.root(this)
         val header = Ui.column(this)
         Ui.pad(header, 24)
-        header.addView(Ui.label(this, "✦  MEMO / MY LITTLE SPACE", 11f, Ui.purple, true))
+        header.addView(Ui.label(this, "✦  筆記／我的小天地", 11f, Ui.purple, true))
         header.addView(Ui.space(this, 8))
         val titleRow = Ui.row(this)
         titleRow.addView(Ui.label(this, getString(R.string.app_name), 32f, bold = true),
@@ -122,7 +122,9 @@ class MainActivity : LocalizedActivity() {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.sticker_source_url))))
                 }.show()
         })
-        BottomNavigation.add(this, root, false, {}, {
+        BottomNavigation.add(this, root, BottomNavigation.Tab.NOTES, {}, {
+            startActivity(Intent(this, DateScheduleActivity::class.java))
+        }, {
             startActivity(Intent(this, CloudProfileActivity::class.java))
         })
     }
