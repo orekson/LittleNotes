@@ -254,3 +254,5 @@ Google Drive 備份失敗（%1$d），請稍後重試|Google Drive backup failed
 筆記時間提醒|Note reminders|メモの通知|메모 알림|Recordatorios de notas
 在指定時間顯示筆記中的整行文字|Show the full note line at the chosen time|指定した時刻にメモの行全体を表示|지정한 시간에 메모의 한 줄 전체 표시|Mostrar toda la línea de la nota a la hora elegida
 未允許通知，提醒不會顯示；可到系統設定開啟。|Notifications are off, so reminders will not appear. You can enable them in system settings.|通知が許可されていないため、リマインダーは表示されません。システム設定で有効にできます。|알림이 허용되지 않아 알림이 표시되지 않습니다. 시스템 설정에서 켤 수 있습니다.|Las notificaciones están desactivadas, así que no aparecerán recordatorios. Puedes activarlas en los ajustes.
+
+確定要刪除此提醒嗎？|Delete this reminder?|このリマインダーを削除しますか？|이 알림을 삭제할까요?|¿Eliminar este recordatorio?

@@ -4,9 +4,14 @@ import android.app.AlertDialog
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
-import android.widget.CalendarView
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.text.TextUtils
+import android.view.Gravity
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.TextView
 import tw.local.memonote.data.Note
 import tw.local.memonote.data.NoteStore
 import tw.local.memonote.ui.AppLanguage
@@ -14,14 +19,18 @@ import tw.local.memonote.ui.BottomNavigation
 import tw.local.memonote.ui.LocalizedActivity
 import tw.local.memonote.ui.Ui
 import tw.local.memonote.ui.localizedDisplayTitle
+import tw.local.memonote.widget.DateCalendarModel
 import tw.local.memonote.widget.DateWidgetSchedule
 import tw.local.memonote.widget.NoteWidgetProvider
 import java.time.LocalDate
-import java.time.ZoneId
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.time.temporal.WeekFields
 
 class DateScheduleActivity : LocalizedActivity() {
     private var selectedDate = LocalDate.now()
+    private var visibleMonth = YearMonth.from(selectedDate)
     private var widgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
     override fun onResume() {
@@ -34,6 +43,9 @@ class DateScheduleActivity : LocalizedActivity() {
 
     private fun label(date: LocalDate): String =
         date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd", AppLanguage.locale(this)))
+
+    private fun firstAllowedDate(): LocalDate = LocalDate.now().minusYears(1)
+    private fun lastAllowedDate(): LocalDate = LocalDate.now().plusYears(1)
 
     private fun showPage() {
         val ids = activeWidgets()
@@ -61,22 +73,10 @@ class DateScheduleActivity : LocalizedActivity() {
                         null, null)
                 else Ui.toast(this, "請長按桌面空白處，從小工具清單加入小小筆記。")
             })
-            val selected = Ui.label(this,
-                AppLanguage.format(this, "所選日期：%1\$s", label(selectedDate)), 16f)
-            content.addView(CalendarView(this).apply {
-                minDate = LocalDate.now().minusYears(1).atStartOfDay(ZoneId.systemDefault())
-                    .toInstant().toEpochMilli()
-                maxDate = LocalDate.now().plusYears(1).atStartOfDay(ZoneId.systemDefault())
-                    .toInstant().toEpochMilli()
-                date = selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-                setOnDateChangeListener { _, year, month, day ->
-                    selectedDate = LocalDate.of(year, month + 1, day)
-                    selected.text = AppLanguage.format(this@DateScheduleActivity,
-                        "所選日期：%1\$s", label(selectedDate))
-                    Ui.toast(this@DateScheduleActivity, "先加入一個桌面小工具，再設定日期切換。")
-                }
-            })
-            content.addView(selected)
+            content.addView(buildCalendar(notes, emptyMap()))
+            content.addView(Ui.space(this, 12))
+            content.addView(Ui.label(this,
+                AppLanguage.format(this, "所選日期：%1\$s", label(selectedDate)), 16f))
         } else {
             val index = ids.indexOf(widgetId)
             val current = notes.firstOrNull { it.id == NoteWidgetProvider.noteId(this, widgetId) }
@@ -93,20 +93,13 @@ class DateScheduleActivity : LocalizedActivity() {
                     .show()
             })
             content.addView(Ui.space(this, 12))
-            val calendar = CalendarView(this).apply {
-                minDate = LocalDate.now().minusYears(1).atStartOfDay(ZoneId.systemDefault())
-                    .toInstant().toEpochMilli()
-                maxDate = LocalDate.now().plusYears(1).atStartOfDay(ZoneId.systemDefault())
-                    .toInstant().toEpochMilli()
-                date = selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-                setOnDateChangeListener { _, year, month, day ->
-                    selectedDate = LocalDate.of(year, month + 1, day)
-                    chooseNote(notes)
-                }
+            val assignments = DateWidgetSchedule.assignments(this, widgetId)
+            val assignmentTitles = assignments.mapValues { (_, noteId) ->
+                notes.firstOrNull { it.id == noteId }?.localizedDisplayTitle(this)
             }
-            content.addView(calendar)
+            content.addView(buildCalendar(notes, assignmentTitles))
             content.addView(Ui.space(this, 12))
-            val assigned = DateWidgetSchedule.assignments(this, widgetId)[selectedDate]
+            val assigned = assignments[selectedDate]
             val note = notes.firstOrNull { it.id == assigned }
             content.addView(Ui.label(this,
                 AppLanguage.format(this, "所選日期：%1\$s", label(selectedDate)), 16f, bold = true))
@@ -125,6 +118,116 @@ class DateScheduleActivity : LocalizedActivity() {
         }, {}, {
             startActivity(Intent(this, CloudProfileActivity::class.java))
         })
+    }
+
+    private fun buildCalendar(
+        notes: List<Note>,
+        assignments: Map<LocalDate, String?>,
+    ): LinearLayout {
+        val calendar = Ui.column(this)
+        val locale = AppLanguage.locale(this)
+        val minimum = firstAllowedDate()
+        val maximum = lastAllowedDate()
+        val firstMonth = YearMonth.from(minimum)
+        val lastMonth = YearMonth.from(maximum)
+        if (visibleMonth.isBefore(firstMonth)) visibleMonth = firstMonth
+        if (visibleMonth.isAfter(lastMonth)) visibleMonth = lastMonth
+
+        val monthBar = Ui.row(this)
+        val previous = Ui.button(this, "‹") {
+            if (visibleMonth.isAfter(firstMonth)) {
+                visibleMonth = visibleMonth.minusMonths(1)
+                showPage()
+            }
+        }.apply { isEnabled = visibleMonth.isAfter(firstMonth) }
+        monthBar.addView(previous, LinearLayout.LayoutParams(Ui.dp(this, 56), -2))
+        val monthTitle = Ui.label(this,
+            visibleMonth.format(DateTimeFormatter.ofPattern("yyyy MMMM", locale)),
+            16f, bold = true)
+        monthTitle.gravity = Gravity.CENTER
+        monthBar.addView(monthTitle, LinearLayout.LayoutParams(0, -2, 1f))
+        val next = Ui.button(this, "›") {
+            if (visibleMonth.isBefore(lastMonth)) {
+                visibleMonth = visibleMonth.plusMonths(1)
+                showPage()
+            }
+        }.apply { isEnabled = visibleMonth.isBefore(lastMonth) }
+        monthBar.addView(next, LinearLayout.LayoutParams(Ui.dp(this, 56), -2))
+        calendar.addView(monthBar)
+
+        val firstDay = WeekFields.of(locale).firstDayOfWeek
+        val weekdays = Ui.row(this)
+        repeat(7) { offset ->
+            val weekday = firstDay.plus(offset.toLong())
+            val weekdayLabel = TextView(this).apply {
+                text = weekday.getDisplayName(TextStyle.SHORT, locale)
+                textSize = 11f
+                gravity = Gravity.CENTER
+                setTextColor(Ui.muted)
+            }
+            weekdays.addView(weekdayLabel, LinearLayout.LayoutParams(0, Ui.dp(this, 24), 1f))
+        }
+        calendar.addView(weekdays)
+
+        val cells = DateCalendarModel.monthCells(
+            visibleMonth, firstDay, assignments, minimum, maximum)
+        cells.chunked(7).forEach { week ->
+            val row = Ui.row(this)
+            week.forEach { cell ->
+                val date = cell.date
+                val cellView = Ui.column(this).apply {
+                    gravity = Gravity.CENTER
+                    val isCurrentMonth = date?.let { YearMonth.from(it) == visibleMonth } == true
+                    val drawable = GradientDrawable().apply {
+                        cornerRadius = Ui.dp(this@DateScheduleActivity, 5).toFloat()
+                        setColor(if (cell.isAssigned) 0xffdef1ff.toInt() else Color.TRANSPARENT)
+                        if (date == selectedDate)
+                            setStroke(Ui.dp(this@DateScheduleActivity, 1), 0xff6caee8.toInt())
+                    }
+                    background = drawable
+                    isClickable = date != null
+                    isFocusable = date != null
+                    if (date != null) {
+                        contentDescription = if (cell.isAssigned && !cell.noteTitle.isNullOrBlank())
+                            label(date) + "，" + cell.noteTitle
+                        else label(date)
+                        setOnClickListener {
+                            selectedDate = date
+                            visibleMonth = YearMonth.from(date)
+                            showPage()
+                            if (widgetId in activeWidgets()) chooseNote(notes)
+                            else Ui.toast(this@DateScheduleActivity,
+                                "先加入一個桌面小工具，再設定日期切換。")
+                        }
+                    }
+                    val dayNumber = TextView(this@DateScheduleActivity).apply {
+                        text = date?.dayOfMonth?.toString().orEmpty()
+                        textSize = 14f
+                        gravity = Gravity.CENTER
+                        setTextColor(if (isCurrentMonth) Ui.ink else Ui.muted)
+                    }
+                    addView(dayNumber, LinearLayout.LayoutParams(-1, Ui.dp(this@DateScheduleActivity, 20)))
+                    val noteTitle = TextView(this@DateScheduleActivity).apply {
+                        text = cell.noteTitle.orEmpty()
+                        textSize = 8f
+                        gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+                        setTextColor(Ui.ink)
+                        maxLines = 2
+                        ellipsize = TextUtils.TruncateAt.END
+                        includeFontPadding = false
+                        visibility = if (cell.isAssigned && !cell.noteTitle.isNullOrBlank())
+                            View.VISIBLE else View.INVISIBLE
+                    }
+                    addView(noteTitle, LinearLayout.LayoutParams(-1, 0, 1f))
+                }
+                val spacing = Ui.dp(this, 1)
+                row.addView(cellView, LinearLayout.LayoutParams(0, Ui.dp(this, 62), 1f).apply {
+                    setMargins(spacing, spacing, spacing, spacing)
+                })
+            }
+            calendar.addView(row)
+        }
+        return calendar
     }
 
     private fun chooseNote(notes: List<Note>) {

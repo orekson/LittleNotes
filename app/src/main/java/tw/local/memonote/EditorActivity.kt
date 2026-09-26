@@ -325,61 +325,68 @@ class EditorActivity: LocalizedActivity() {
         chooseReminderTime(null)
     }
     private fun editReminder(span: ReminderSpan) {
-        val label=java.text.SimpleDateFormat("yyyy/MM/dd HH:mm",AppLanguage.locale(this))
-            .format(java.util.Date(span.timeMillis))
-        AlertDialog.Builder(this)
-            .setTitle(AppLanguage.format(this,"提醒時間：%1\$s",label))
-            .setItems(arrayOf(AppLanguage.text(this,"修改時間"),AppLanguage.text(this,"刪除提醒"))) { _,which ->
-                if(which==0) chooseReminderTime(span)
-                else {
-                    val at=body.text.getSpanStart(span)
-                    if(at>=0) {
-                        val end=if(at+1<body.length() && body.text[at+1]==' ') at+2 else at+1
-                        body.text.delete(at,end)
-                    }
-                }
-            }
-            .setNegativeButton(AppLanguage.text(this,"取消"),null).show()
+        chooseReminderTime(span)
+    }
+    private fun deleteReminder(span: ReminderSpan) {
+        val at = body.text.getSpanStart(span)
+        if (at >= 0) {
+            val end = if (at + 1 < body.length() && body.text[at + 1] == ' ') at + 2 else at + 1
+            body.text.delete(at, end)
+        }
     }
     private fun chooseReminderTime(existing: ReminderSpan?) {
-        val initial=java.util.Calendar.getInstance().apply {
-            timeInMillis=existing?.timeMillis ?: System.currentTimeMillis()+3_600_000L
+        val initial = java.util.Calendar.getInstance().apply {
+            timeInMillis = existing?.timeMillis ?: System.currentTimeMillis() + 3_600_000L
         }
-        val picker=DatePickerDialog(this,{ _,year,month,day ->
-            TimePickerDialog(this,{ _,hour,minute ->
-                val chosen=java.util.Calendar.getInstance().apply {
-                    set(year,month,day,hour,minute); set(java.util.Calendar.SECOND,0)
-                    set(java.util.Calendar.MILLISECOND,0)
+        val picker = DatePickerDialog(this, { _, year, month, day ->
+            TimePickerDialog(this, R.style.DigitalTimePickerDialog, { _, hour, minute ->
+                val chosen = java.util.Calendar.getInstance().apply {
+                    set(year, month, day, hour, minute)
+                    set(java.util.Calendar.SECOND, 0)
+                    set(java.util.Calendar.MILLISECOND, 0)
                 }.timeInMillis
-                if(chosen<=System.currentTimeMillis()) {
-                    Ui.toast(this,"請選擇未來的日期和時間")
-                } else if(existing==null) {
-                    val at=pendingStart.coerceIn(0,body.length())
-                    if(body.length()+2>100000) {
-                        Ui.toast(this,"這篇筆記已達字數上限")
+                if (chosen <= System.currentTimeMillis()) {
+                    Ui.toast(this, "請選擇未來的日期和時間")
+                } else if (existing == null) {
+                    val at = pendingStart.coerceIn(0, body.length())
+                    if (body.length() + 2 > 100000) {
+                        Ui.toast(this, "這篇筆記已達字數上限")
                     } else {
-                        body.text.insert(at,"\uFFFC ")
-                        body.text.setSpan(ReminderSpan(java.util.UUID.randomUUID().toString(),chosen),
-                            at,at+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                        body.setSelection(at+2)
+                        body.text.insert(at, "\uFFFC ")
+                        body.text.setSpan(ReminderSpan(java.util.UUID.randomUUID().toString(), chosen),
+                            at, at + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        body.setSelection(at + 2)
                         askReminderPermissions()
-                        Ui.toast(this,"儲存筆記後啟用提醒")
+                        Ui.toast(this, "儲存筆記後啟用提醒")
                     }
                 } else {
-                    val at=body.text.getSpanStart(existing)
-                    if(at>=0) {
+                    val at = body.text.getSpanStart(existing)
+                    if (at >= 0) {
                         body.text.removeSpan(existing)
-                        body.text.setSpan(ReminderSpan(existing.id,chosen),
-                            at,at+1,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        body.text.setSpan(ReminderSpan(existing.id, chosen),
+                            at, at + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                         body.invalidate()
                         askReminderPermissions()
                     }
                 }
-            },initial.get(java.util.Calendar.HOUR_OF_DAY),
-                initial.get(java.util.Calendar.MINUTE),true).show()
-        },initial.get(java.util.Calendar.YEAR),initial.get(java.util.Calendar.MONTH),
+            }, initial.get(java.util.Calendar.HOUR_OF_DAY),
+                initial.get(java.util.Calendar.MINUTE), true).show()
+        }, initial.get(java.util.Calendar.YEAR), initial.get(java.util.Calendar.MONTH),
             initial.get(java.util.Calendar.DAY_OF_MONTH))
-        picker.datePicker.minDate=System.currentTimeMillis()-86_400_000L
+        if (existing != null) {
+            picker.setButton(android.content.DialogInterface.BUTTON_NEUTRAL,
+                AppLanguage.text(this, "刪除提醒")) { _, _ ->
+                AlertDialog.Builder(this)
+                    .setTitle(AppLanguage.text(this, "刪除提醒"))
+                    .setMessage(AppLanguage.text(this, "確定要刪除此提醒嗎？"))
+                    .setPositiveButton(AppLanguage.text(this, "刪除提醒")) { _, _ ->
+                        deleteReminder(existing)
+                    }
+                    .setNegativeButton(AppLanguage.text(this, "取消"), null)
+                    .show()
+            }
+        }
+        picker.datePicker.minDate = System.currentTimeMillis() - 86_400_000L
         picker.show()
     }
     private fun askReminderPermissions() {
