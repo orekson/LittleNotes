@@ -39,9 +39,9 @@ object PasswordDialogs {
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val password = first.text.toString().toCharArray()
-                val minimum = if (confirm) 8 else 1
+                val minimum = if (confirm) 5 else 1
                 if (password.size < minimum) {
-                    first.error = if (confirm) "請設定至少 8 個字元" else "請輸入密碼"
+                    first.error = if (confirm) "請設定至少 5 個字元" else "請輸入密碼"
                     password.fill('\u0000')
                     return@setOnClickListener
                 }

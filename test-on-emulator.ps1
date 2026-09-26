@@ -31,7 +31,8 @@ if (-not $deviceLine) { throw "Android 模擬器沒有啟動，請確認虛擬�
 $serial = ($deviceLine.ToString() -split "\s+")[0]
 $deadline = (Get-Date).AddMinutes(3)
 do {
-    $boot = (& $adb -s $serial shell getprop sys.boot_completed 2>$null).Trim()
+    $bootOutput = & $adb -s $serial shell getprop sys.boot_completed 2>$null
+    $boot = ([string]$bootOutput).Trim()
     if ($boot -eq "1") { break }
     Start-Sleep -Seconds 3
 } while ((Get-Date) -lt $deadline)

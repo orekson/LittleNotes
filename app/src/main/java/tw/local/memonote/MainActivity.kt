@@ -14,6 +14,7 @@ import tw.local.memonote.data.BackupRepository
 import tw.local.memonote.data.Note
 import tw.local.memonote.data.NoteStore
 import tw.local.memonote.data.VaultRepository
+import tw.local.memonote.ui.BottomNavigation
 import tw.local.memonote.ui.PasswordDialogs
 import tw.local.memonote.ui.Ui
 import tw.local.memonote.widget.NoteWidgetProvider
@@ -113,6 +114,9 @@ class MainActivity : Activity() {
                 .setNeutralButton(getString(R.string.sticker_source_action)) { _, _ ->
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.sticker_source_url))))
                 }.show()
+        })
+        BottomNavigation.add(this, root, false, {}, {
+            startActivity(Intent(this, CloudProfileActivity::class.java))
         })
     }
 
@@ -237,7 +241,7 @@ class MainActivity : Activity() {
             }
             val uri = data.data!!
             if (password == null) {
-                PasswordDialogs.ask(this, "重新設定備份密碼", "請設定至少 8 個字元。", true) {
+                PasswordDialogs.ask(this, "重新設定備份密碼", "請設定至少 5 個字元。", true) {
                     performBackup(uri, it)
                 }
             } else {

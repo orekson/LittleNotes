@@ -4,8 +4,11 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import tw.local.memonote.cloud.CloudBackupJob
 
 class NoteStore(context: Context) : SQLiteOpenHelper(context.applicationContext, "notes.db", null, 2) {
+    private val appContext = context.applicationContext
+    private fun changed() { runCatching { CloudBackupJob.schedule(appContext) } }
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             "CREATE TABLE notes (" +
@@ -63,11 +66,16 @@ class NoteStore(context: Context) : SQLiteOpenHelper(context.applicationContext,
             error("加密筆記必須以密文儲存")
         }
         val v = values(note, System.currentTimeMillis())
-        if (note.id == 0L) return writableDatabase.insertOrThrow("notes", null, v)
-        check(writableDatabase.update("notes", v, "id=?", arrayOf(note.id.toString())) == 1) {
-            "筆記已不存在"
+        val savedId = if (note.id == 0L) {
+            writableDatabase.insertOrThrow("notes", null, v)
+        } else {
+            check(writableDatabase.update("notes", v, "id=?", arrayOf(note.id.toString())) == 1) {
+                "筆記已不存在"
+            }
+            note.id
         }
-        return note.id
+        changed()
+        return savedId
     }
 
     fun saveLocked(noteId: Long, sealed: String) {
@@ -79,6 +87,7 @@ class NoteStore(context: Context) : SQLiteOpenHelper(context.applicationContext,
             "id=?",
             arrayOf(noteId.toString())
         ) == 1)
+        changed()
     }
 
     fun removeLock(note: Note) {
@@ -88,6 +97,7 @@ class NoteStore(context: Context) : SQLiteOpenHelper(context.applicationContext,
             "notes", values(note, System.currentTimeMillis()),
             "id=?", arrayOf(note.id.toString())
         ) == 1)
+        changed()
     }
 
     fun insertImported(notes: List<Note>): Int {
@@ -96,6 +106,7 @@ class NoteStore(context: Context) : SQLiteOpenHelper(context.applicationContext,
         try {
             notes.forEach { db.insertOrThrow("notes", null, values(it, it.updated)) }
             db.setTransactionSuccessful()
+            changed()
             return notes.size
         } finally {
             db.endTransaction()
@@ -104,6 +115,7 @@ class NoteStore(context: Context) : SQLiteOpenHelper(context.applicationContext,
 
     fun delete(id: Long) {
         writableDatabase.delete("notes", "id=?", arrayOf(id.toString()))
+        changed()
     }
 
     fun toggleCheck(noteId: Long, checkId: String): Boolean {
