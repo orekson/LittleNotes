@@ -1,0 +1,218 @@
+# Traditional Chinese source|English|Japanese|Korean|Spanish
+切換語言|Change language|言語を切り替え|언어 변경|Cambiar idioma
+選擇語言|Choose language|言語を選択|언어 선택|Elegir idioma
+取消|Cancel|キャンセル|취소|Cancelar
+確定|OK|確定|확인|Aceptar
+知道了|Got it|了解|알겠어요|Entendido
+返回|Back|戻る|뒤로|Volver
+關閉|Close|閉じる|닫기|Cerrar
+繼續|Continue|続ける|계속|Continuar
+保留|Keep|残す|유지|Conservar
+刪除|Delete|削除|삭제|Eliminar
+儲存|Save|保存|저장|Guardar
+捨棄|Discard|破棄|버리기|Descartar
+套用|Apply|適用|적용|Aplicar
+把日常寫下，讓喜歡的陪在桌面。|Write down your day and keep what you love on your home screen.|日々を書き留めて、お気に入りをホーム画面に。|일상을 기록하고 좋아하는 것을 홈 화면에 두세요.|Escribe tu día y lleva lo que te gusta a la pantalla de inicio.
+＋  寫一篇新筆記|＋  New note|＋  新しいメモ|＋  새 메모|＋  Nueva nota
+我的筆記  ·  %1$d|My notes  ·  %1$d|マイメモ  ·  %1$d|내 메모  ·  %1$d|Mis notas  ·  %1$d
+這一頁，留給你|A page just for you|あなただけのページ|당신을 위한 페이지|Una página para ti
+寫下今天的小事，插入喜歡的小人貼圖，再放到桌面隨時看見。|Write about today, add a favorite sticker, and keep it on your home screen.|今日の出来事を書き、お気に入りのステッカーを添えてホーム画面に。|오늘의 일을 쓰고 좋아하는 스티커를 넣어 홈 화면에 두세요.|Escribe sobre tu día, añade una pegatina y pon la nota en tu pantalla de inicio.
+分類：%1$s|Category: %1$s|カテゴリー：%1$s|분류: %1$s|Categoría: %1$s
+輸入密碼後才能查看內容|Enter the password to view this note|パスワードを入力すると表示できます|암호를 입력하면 볼 수 있습니다|Introduce la contraseña para ver esta nota
+只有標題，也是一篇筆記。|A title is a note, too.|タイトルだけでもメモです。|제목만 있어도 메모예요.|Un título también puede ser una nota.
+   ·   點一下輸入密碼|   ·   Tap to enter password|   ·   タップしてパスワードを入力|   ·   탭하여 암호 입력|   ·   Toca para introducir la contraseña
+   ·   點一下繼續編輯|   ·   Tap to edit|   ·   タップして編集|   ·   탭하여 편집|   ·   Toca para editar
+✧  加到桌面小工具|✧  Add home screen widget|✧  ウィジェットを追加|✧  홈 화면 위젯 추가|✧  Añadir widget a inicio
+備份筆記到檔案|Back up notes to a file|メモをファイルにバックアップ|메모를 파일로 백업|Guardar notas en un archivo
+從備份檔還原|Restore from backup file|バックアップファイルから復元|백업 파일에서 복원|Restaurar desde archivo
+可在系統檔案選擇器選擇手機或已連接的 Google Drive 等儲存空間。|Choose your phone or a connected Google Drive in the system file picker.|システムのファイル選択画面で端末や接続済みの Google ドライブを選べます。|시스템 파일 선택기에서 휴대전화나 연결된 Google Drive를 선택할 수 있습니다.|Elige el teléfono o Google Drive conectado en el selector de archivos del sistema.
+貼圖來源與使用說明|Stickers: source and help|ステッカーの出典と使い方|스티커 출처 및 도움말|Origen y uso de las pegatinas
+解除加密|Remove encryption|暗号化を解除|암호화 해제|Quitar cifrado
+加密筆記|Encrypt note|メモを暗号化|메모 암호화|Cifrar nota
+刪除筆記|Delete note|メモを削除|메모 삭제|Eliminar nota
+設定這篇筆記的密碼|Set a password for this note|このメモのパスワードを設定|이 메모의 암호 설정|Crear contraseña para esta nota
+標題、內容、分類和附件會一起加密。忘記密碼就無法解鎖或還原這篇筆記，請妥善保存。|The title, text, category, and attachments will be encrypted. If you forget the password, this note cannot be unlocked or restored. Keep it safe.|タイトル、本文、カテゴリー、添付ファイルを暗号化します。パスワードを忘れると解除も復元もできません。大切に保管してください。|제목, 내용, 분류, 첨부 파일을 암호화합니다. 암호를 잊으면 잠금을 풀거나 복원할 수 없으니 안전하게 보관하세요.|Se cifrarán el título, el texto, la categoría y los adjuntos. Si olvidas la contraseña, no podrás abrir ni restaurar la nota. Guárdala bien.
+正在加密筆記|Encrypting note|メモを暗号化しています|메모 암호화 중|Cifrando nota
+筆記已加密|Note encrypted|メモを暗号化しました|메모가 암호화되었습니다|Nota cifrada
+加密失敗：%1$s|Encryption failed: %1$s|暗号化に失敗：%1$s|암호화 실패: %1$s|Error al cifrar: %1$s
+請重試|Please try again|もう一度お試しください|다시 시도하세요|Inténtalo de nuevo
+解除筆記加密|Remove note encryption|メモの暗号化を解除|메모 암호화 해제|Quitar cifrado de la nota
+解除後，筆記與附件會以一般方式保存在這台裝置。|The note and attachments will then be stored normally on this device.|解除すると、メモと添付ファイルはこの端末に通常の形式で保存されます。|해제하면 메모와 첨부 파일이 이 기기에 일반 형식으로 저장됩니다.|La nota y sus adjuntos se guardarán sin cifrado en este dispositivo.
+正在解除加密|Removing encryption|暗号化を解除しています|암호화 해제 중|Quitando cifrado
+已解除加密|Encryption removed|暗号化を解除しました|암호화가 해제되었습니다|Cifrado eliminado
+無法解除加密：%1$s|Could not remove encryption: %1$s|暗号化を解除できません：%1$s|암호화를 해제할 수 없음: %1$s|No se pudo quitar el cifrado: %1$s
+密碼錯誤|Incorrect password|パスワードが違います|암호가 틀렸습니다|Contraseña incorrecta
+刪除這篇筆記？|Delete this note?|このメモを削除しますか？|이 메모를 삭제할까요?|¿Eliminar esta nota?
+刪除後無法復原。|This cannot be undone.|元に戻せません。|삭제 후 복구할 수 없습니다.|No se puede deshacer.
+輸入密碼以刪除|Enter password to delete|削除するにはパスワードを入力|삭제하려면 암호 입력|Introduce la contraseña para eliminar
+加密筆記需要密碼才能刪除。|A password is required to delete an encrypted note.|暗号化されたメモの削除にはパスワードが必要です。|암호화된 메모를 삭제하려면 암호가 필요합니다.|Necesitas la contraseña para eliminar una nota cifrada.
+正在刪除筆記|Deleting note|メモを削除しています|메모 삭제 중|Eliminando nota
+刪除失敗：%1$s|Deletion failed: %1$s|削除に失敗：%1$s|삭제 실패: %1$s|Error al eliminar: %1$s
+刪除失敗，請重試|Could not delete. Try again.|削除できませんでした。再試行してください。|삭제할 수 없습니다. 다시 시도하세요.|No se pudo eliminar. Inténtalo de nuevo.
+設定備份密碼|Set backup password|バックアップのパスワードを設定|백업 암호 설정|Crear contraseña de copia
+備份檔會加密所有筆記和附件。忘記這個密碼，就無法從備份還原；請與單篇筆記密碼分別保存。|The backup encrypts all notes and attachments. If you forget this password, you cannot restore it. Keep it separate from note passwords.|バックアップではすべてのメモと添付ファイルを暗号化します。パスワードを忘れると復元できません。メモのパスワードとは別に保管してください。|백업은 모든 메모와 첨부 파일을 암호화합니다. 암호를 잊으면 복원할 수 없으니 메모 암호와 별도로 보관하세요.|La copia cifra todas las notas y los adjuntos. Si olvidas esta contraseña, no podrás restaurarla. Guárdala aparte de las contraseñas de las notas.
+無法開啟檔案選擇器|Could not open file picker|ファイル選択画面を開けません|파일 선택기를 열 수 없습니다|No se pudo abrir el selector de archivos
+從備份還原|Restore from backup|バックアップから復元|백업에서 복원|Restaurar copia
+備份中的筆記會新增到這台裝置，現有筆記不會被覆蓋。重複還原會新增重複筆記。|Notes from the backup will be added to this device. Existing notes remain unchanged. Restoring twice creates duplicates.|バックアップのメモをこの端末に追加します。既存のメモは上書きされません。再度復元すると重複します。|백업의 메모가 이 기기에 추가됩니다. 기존 메모는 덮어쓰지 않습니다. 다시 복원하면 중복됩니다.|Las notas de la copia se añadirán a este dispositivo. Las notas actuales no se sobrescribirán. Restaurar dos veces creará duplicados.
+選擇備份檔|Choose backup file|バックアップファイルを選択|백업 파일 선택|Elegir archivo de copia
+重新設定備份密碼|Reset backup password|バックアップのパスワードを再設定|백업 암호 재설정|Restablecer contraseña de copia
+請設定至少 5 個字元。|Use at least 5 characters.|5文字以上で設定してください。|5자 이상으로 설정하세요.|Usa al menos 5 caracteres.
+輸入備份密碼|Enter backup password|バックアップのパスワードを入力|백업 암호 입력|Introduce la contraseña de copia
+密碼錯誤或檔案損壞時，現有筆記不會改動。|If the password is wrong or the file is damaged, your current notes will not change.|パスワードが違う場合やファイルが破損している場合、現在のメモは変更されません。|암호가 틀리거나 파일이 손상되면 현재 메모는 변경되지 않습니다.|Si la contraseña es incorrecta o el archivo está dañado, tus notas actuales no cambiarán.
+正在建立備份|Creating backup|バックアップを作成しています|백업 생성 중|Creando copia
+已備份 %1$d 篇筆記|Backed up %1$d notes|%1$d 件のメモをバックアップしました|메모 %1$d개를 백업했습니다|Se guardaron %1$d notas
+備份失敗：%1$s|Backup failed: %1$s|バックアップに失敗：%1$s|백업 실패: %1$s|Error de copia: %1$s
+正在驗證並還原備份|Verifying and restoring backup|バックアップを確認して復元中|백업 확인 및 복원 중|Verificando y restaurando copia
+已還原 %1$d 篇筆記|Restored %1$d notes|%1$d 件のメモを復元しました|메모 %1$d개를 복원했습니다|Se restauraron %1$d notas
+還原失敗：%1$s|Restore failed: %1$s|復元に失敗：%1$s|복원 실패: %1$s|Error al restaurar: %1$s
+密碼錯誤或檔案損壞|Incorrect password or damaged file|パスワードが違うかファイルが破損しています|암호가 틀리거나 파일이 손상되었습니다|Contraseña incorrecta o archivo dañado
+加入桌面|Add to home screen|ホーム画面に追加|홈 화면에 추가|Añadir a inicio
+長按桌面空白處 → 小工具 → 小小筆記。放到空白桌面頁，再長按調整大小。|Long-press an empty spot on your home screen → Widgets → 小小筆記. Place it on an empty page, then long-press to resize.|ホーム画面の空白を長押し → ウィジェット → 小小筆記。空いているページに置き、長押ししてサイズを調整してください。|홈 화면 빈 곳을 길게 누르기 → 위젯 → 小小筆記. 빈 페이지에 놓고 길게 눌러 크기를 조절하세요.|Mantén pulsada un área vacía de inicio → Widgets → 小小筆記. Colócalo y mantén pulsado para cambiar su tamaño.
+筆記讀取失敗，請重新開啟重試|Could not load notes. Reopen the app and try again.|メモを読み込めません。アプリを開き直してください。|메모를 불러올 수 없습니다. 앱을 다시 여세요.|No se pudieron cargar las notas. Vuelve a abrir la app.
+筆記讀取失敗，請重試|Could not load notes. Try again.|メモを読み込めません。再試行してください。|메모를 불러올 수 없습니다. 다시 시도하세요.|No se pudieron cargar las notas. Inténtalo de nuevo.
+無法開啟筆記|Could not open note|メモを開けません|메모를 열 수 없습니다|No se pudo abrir la nota
+無法還原草稿，請重新開啟筆記|Could not restore draft. Reopen the note.|下書きを復元できません。メモを開き直してください。|임시 저장을 복원할 수 없습니다. 메모를 다시 여세요.|No se pudo recuperar el borrador. Vuelve a abrir la nota.
+🔒 加密筆記|🔒 Encrypted note|🔒 暗号化されたメモ|🔒 암호화된 메모|🔒 Nota cifrada
+未命名筆記|Untitled note|無題のメモ|제목 없는 메모|Nota sin título
+輸入密碼後才能檢視和編輯。忘記密碼就無法還原。|Enter the password to view or edit. If you forget it, the note cannot be restored.|表示・編集にはパスワードが必要です。忘れると復元できません。|보거나 편집하려면 암호가 필요합니다. 잊으면 복원할 수 없습니다.|Introduce la contraseña para ver o editar. Si la olvidas, no podrás restaurar la nota.
+輸入密碼|Enter password|パスワードを入力|암호 입력|Introducir contraseña
+返回筆記列表|Back to notes|メモ一覧に戻る|메모 목록으로|Volver a notas
+解鎖筆記|Unlock note|メモのロックを解除|메모 잠금 해제|Desbloquear nota
+密碼只用於解鎖這篇筆記；忘記密碼就無法還原。|This password unlocks only this note. If you forget it, the note cannot be restored.|このパスワードはこのメモの解除にのみ使います。忘れると復元できません。|이 암호는 이 메모의 잠금 해제에만 사용됩니다. 잊으면 복원할 수 없습니다.|Esta contraseña solo desbloquea esta nota. Si la olvidas, no podrás restaurarla.
+正在解鎖|Unlocking|ロックを解除しています|잠금 해제 중|Desbloqueando
+解鎖失敗：密碼錯誤或資料損壞|Could not unlock: wrong password or damaged data|解除できません：パスワードが違うかデータが破損しています|잠금을 풀 수 없습니다: 암호가 틀리거나 데이터가 손상되었습니다|No se pudo desbloquear: contraseña incorrecta o datos dañados
+新的日常|New note|新しいメモ|새 메모|Nueva nota
+編輯筆記|Edit note|メモを編集|메모 편집|Editar nota
+給這篇筆記一個名字|Give this note a title|メモにタイトルを付ける|메모 제목 입력|Ponle título a esta nota
+分類（可留空）|Category (optional)|カテゴリー（任意）|분류(선택 사항)|Categoría (opcional)
+墨|Ink|墨|먹색|Tinta
+莓|Berry|ベリー|베리|Baya
+紫|Purple|紫|보라|Morado
+藍|Blue|青|파랑|Azul
+綠|Green|緑|초록|Verde
+金|Gold|金|금색|Dorado
+白|White|白|흰색|Blanco
+文字顏色：%1$s|Text color: %1$s|文字色：%1$s|글자 색: %1$s|Color del texto: %1$s
+彩虹|Rainbow|レインボー|무지개|Arcoíris
+柔光|Glow|光彩|은은한 빛|Resplandor
+關閉柔光|Remove glow|光彩を消す|빛 효과 끄기|Quitar resplandor
+清除樣式|Clear style|スタイルを消去|스타일 지우기|Borrar estilo
+今天，有什麼想留下的呢？|What would you like to remember today?|今日は何を残しますか？|오늘 무엇을 남기고 싶나요?|¿Qué quieres recordar hoy?
+選字上色；未選取時套用整篇|Select text to color it; with no selection, style the whole note.|文字を選択するとその部分に、未選択ならメモ全体に適用します。|글자를 선택하면 해당 부분에, 선택하지 않으면 전체 메모에 적용됩니다.|Selecciona texto para colorearlo; sin selección, se aplica a toda la nota.
+✿ 貼圖|✿ Stickers|✿ ステッカー|✿ 스티커|✿ Pegatinas
+✧ 桌面預覽|✧ Widget preview|✧ ウィジェットをプレビュー|✧ 위젯 미리보기|✧ Vista previa del widget
+＋ 圖片|＋ Image|＋ 画像|＋ 이미지|＋ Imagen
+☐ 勾選方框|☐ Checklist|☐ チェック項目|☐ 체크리스트|☐ Casilla
+點圖片可再縮放；點方框切換完成狀態。|Tap an image to resize it; tap a box to mark it done.|画像をタップしてサイズを変更、チェック欄をタップして完了を切り替えます。|이미지를 탭해 크기를 바꾸고 체크박스를 탭해 완료 상태를 바꾸세요.|Toca una imagen para cambiar su tamaño o una casilla para marcarla.
+背景，換一種心情|Backgrounds for every mood|気分に合わせて背景を変更|기분에 맞는 배경|Fondos para cada momento
+奶油|Cream|クリーム|크림|Crema
+櫻花|Sakura|桜|벚꽃|Sakura
+海風|Sea breeze|海風|바닷바람|Brisa marina
+星夜|Starry night|星空|별밤|Noche estrellada
+從手機選擇背景圖片|Choose a background image|背景画像を選ぶ|배경 이미지 선택|Elegir imagen de fondo
+背景淡化  %1$d%%|Background fade  %1$d%%|背景の淡さ  %1$d%%|배경 흐리기  %1$d%%|Atenuar fondo  %1$d%%
+背景淡化程度|Background fade amount|背景の淡さ|배경 흐리기 정도|Nivel de atenuación del fondo
+0% 保留原圖  ·  100% 淡至底色\n文字與貼圖不會一起變淡。|0% keeps the original image · 100% fades to the base color\nText and stickers stay unchanged.|0% は元の画像、100% はベース色まで淡くします\n文字とステッカーは変わりません。|0%는 원본 이미지, 100%는 바탕색까지 흐리게 합니다\n글자와 스티커는 그대로입니다.|0% conserva la imagen · 100% la atenúa hasta el color base\nEl texto y las pegatinas no cambian.
+刪除這篇筆記|Delete this note|このメモを削除|이 메모 삭제|Eliminar esta nota
+先寫一些文字，再套用喜歡的效果|Write something before applying a style.|スタイルを付ける前に文字を入力してください。|스타일을 적용하기 전에 글자를 입력하세요.|Escribe algo antes de aplicar un estilo.
+這篇筆記已達字數上限|This note has reached the character limit.|このメモは文字数の上限に達しました。|이 메모는 글자 수 한도에 도달했습니다.|Esta nota alcanzó el límite de caracteres.
+這台裝置沒有可用的圖片選擇器|No image picker is available on this device.|この端末には画像選択機能がありません。|이 기기에는 이미지 선택기가 없습니다.|Este dispositivo no tiene selector de imágenes.
+圖片匯入失敗：%1$s|Could not import image: %1$s|画像を読み込めません：%1$s|이미지 가져오기 실패: %1$s|No se pudo importar la imagen: %1$s
+請換一張圖片|Try another image|別の画像をお試しください|다른 이미지를 선택하세요|Prueba otra imagen
+無法產生預覽，請重試|Could not create preview. Try again.|プレビューを作成できません。再試行してください。|미리보기를 만들 수 없습니다. 다시 시도하세요.|No se pudo crear la vista previa. Inténtalo de nuevo.
+先寫下標題或內容吧|Add a title or some text first.|まずタイトルか本文を入力してください。|먼저 제목이나 내용을 입력하세요.|Escribe un título o contenido primero.
+正在儲存加密筆記|Saving encrypted note|暗号化されたメモを保存中|암호화된 메모 저장 중|Guardando nota cifrada
+加密筆記已儲存|Encrypted note saved|暗号化されたメモを保存しました|암호화된 메모를 저장했습니다|Nota cifrada guardada
+儲存失敗，輸入內容已保留|Could not save. Your draft was kept.|保存できません。入力内容は保持されています。|저장할 수 없습니다. 입력 내용은 보관되었습니다.|No se pudo guardar. Se conservó el borrador.
+已儲存，桌面筆記已更新|Saved. Home screen note updated.|保存しました。ウィジェットも更新されました。|저장했습니다. 홈 화면 메모도 업데이트되었습니다.|Guardado. La nota de inicio se actualizó.
+儲存失敗，輸入內容已保留，請重試|Could not save. Your draft was kept; try again.|保存できません。入力内容は保持されています。再試行してください。|저장할 수 없습니다. 입력 내용은 보관되었습니다. 다시 시도하세요.|No se pudo guardar. El borrador se conservó; inténtalo de nuevo.
+桌面上顯示這篇的小工具會提示重新選擇筆記。|Widgets showing this note will ask you to choose another.|このメモを表示するウィジェットには、再選択の案内が出ます。|이 메모를 표시하던 위젯에서 다른 메모를 선택하라는 안내가 나옵니다.|Los widgets que muestran esta nota pedirán elegir otra.
+要儲存這次修改嗎？|Save your changes?|変更を保存しますか？|변경 사항을 저장할까요?|¿Guardar los cambios?
+繼續編輯|Keep editing|編集を続ける|계속 편집|Seguir editando
+草稿暫存失敗，請先儲存筆記|Could not keep the draft. Save your note first.|下書きを保持できません。先にメモを保存してください。|임시 저장에 실패했습니다. 먼저 메모를 저장하세요.|No se pudo conservar el borrador. Guarda la nota primero.
+返回編輯|Back to editor|編集画面に戻る|편집기로 돌아가기|Volver al editor
+小工具預覽|Widget preview|ウィジェットのプレビュー|위젯 미리보기|Vista previa del widget
+  實際尺寸可在桌面長按調整；長文可上下捲動。|  Long-press the widget to resize it; scroll to read long notes.|  ウィジェットを長押ししてサイズを変更し、長文はスクロールできます。|  위젯을 길게 눌러 크기를 바꾸고 긴 메모는 스크롤하세요.|  Mantén pulsado el widget para cambiar su tamaño; desplázate para leer notas largas.
+小小的陪伴，放進你的日常|A little companion for your day|毎日に小さな彩りを|일상 속 작은 동반자|Un pequeño detalle para tu día
+匯入自己的貼圖|Import your stickers|自分のステッカーを読み込む|내 스티커 가져오기|Importar tus pegatinas
+圖片大小：%1$d dp|Image size: %1$d dp|画像サイズ：%1$d dp|이미지 크기: %1$d dp|Tamaño de imagen: %1$d dp
+圖片大小|Image size|画像サイズ|이미지 크기|Tamaño de imagen
+雙指縮放圖片|Pinch to resize image|ピンチして画像のサイズを変更|두 손가락으로 이미지 크기 조절|Pellizca para cambiar el tamaño
+拖動滑桿或雙指縮放。\n保留原圖比例；超過筆記寬度會自動縮小。|Drag the slider or pinch to resize.\nThe aspect ratio is preserved; wide images shrink to fit.|スライダーまたはピンチでサイズを変更します。\n縦横比を保ち、メモ幅を超える場合は縮小します。|슬라이더를 움직이거나 두 손가락으로 크기를 조절하세요.\n비율을 유지하며 메모 너비를 넘으면 자동으로 줄어듭니다.|Arrastra el control o pellizca para cambiar el tamaño.\nSe mantiene la proporción; las imágenes anchas se ajustan.
+調整圖片大小|Resize image|画像サイズを変更|이미지 크기 조절|Cambiar tamaño de imagen
+密碼|Password|パスワード|암호|Contraseña
+再次輸入密碼|Confirm password|パスワードを再入力|암호 다시 입력|Confirmar contraseña
+請設定至少 5 個字元|Use at least 5 characters|5文字以上で設定してください|5자 이상으로 설정하세요|Usa al menos 5 caracteres
+請輸入密碼|Enter a password|パスワードを入力してください|암호를 입력하세요|Introduce una contraseña
+兩次密碼不同|Passwords do not match|パスワードが一致しません|암호가 일치하지 않습니다|Las contraseñas no coinciden
+個人與設定|Profile and settings|プロフィールと設定|프로필 및 설정|Perfil y ajustes
+Google Drive 自動備份|Google Drive auto backup|Google ドライブの自動バックアップ|Google Drive 자동 백업|Copia automática en Google Drive
+已連結 Google Drive|Google Drive connected|Google ドライブに接続済み|Google Drive 연결됨|Google Drive conectado
+尚未連結 Google 帳號|No Google account connected|Google アカウント未接続|Google 계정이 연결되지 않음|No hay cuenta de Google conectada
+重新連接 Google 帳號|Reconnect Google account|Google アカウントを再接続|Google 계정 다시 연결|Volver a conectar Google
+使用 Google 帳號登入|Sign in with Google|Google でログイン|Google로 로그인|Iniciar sesión con Google
+備份會以密碼加密，存到你在 Google Drive 可看見的「小小筆記備份」資料夾。|Backups are password-encrypted and saved in the visible “小小筆記備份” folder in your Google Drive.|バックアップはパスワードで暗号化され、Google ドライブに表示される「小小筆記備份」フォルダに保存されます。|백업은 암호로 암호화되어 Google Drive의 '小小筆記備份' 폴더에 저장됩니다.|Las copias se cifran con contraseña y se guardan en la carpeta visible «小小筆記備份» de tu Google Drive.
+自動備份：開啟（點一下關閉）|Auto backup: on (tap to turn off)|自動バックアップ：オン（タップしてオフ）|자동 백업: 켜짐(탭하여 끄기)|Copia automática: activada (toca para desactivar)
+自動備份：關閉（點一下開啟）|Auto backup: off (tap to turn on)|自動バックアップ：オフ（タップしてオン）|자동 백업: 꺼짐(탭하여 켜기)|Copia automática: desactivada (toca para activar)
+無法更新自動備份設定|Could not update backup settings|バックアップ設定を更新できません|백업 설정을 변경할 수 없습니다|No se pudo actualizar la copia automática
+立即備份到 Google Drive|Back up to Google Drive now|今すぐ Google ドライブにバックアップ|지금 Google Drive에 백업|Hacer copia en Google Drive ahora
+已排入雲端備份，請稍後查看狀態|Cloud backup queued. Check its status shortly.|クラウドバックアップを予約しました。後で状態を確認してください。|클라우드 백업이 예약되었습니다. 잠시 후 상태를 확인하세요.|Copia en la nube programada. Comprueba el estado en unos momentos.
+從 Google Drive 還原|Restore from Google Drive|Google ドライブから復元|Google Drive에서 복원|Restaurar desde Google Drive
+從雲端還原筆記？|Restore notes from cloud?|クラウドからメモを復元しますか？|클라우드에서 메모를 복원할까요?|¿Restaurar notas desde la nube?
+選取的備份會新增到這台裝置；現有筆記不會被覆蓋。需要當初設定的備份密碼。|The selected backup will add notes to this device without replacing current notes. You will need its original backup password.|選択したバックアップのメモをこの端末に追加します。既存のメモは上書きされません。元のパスワードが必要です。|선택한 백업의 메모가 이 기기에 추가되며 기존 메모는 덮어쓰지 않습니다. 원래 백업 암호가 필요합니다.|La copia elegida añadirá notas sin sobrescribir las actuales. Necesitarás la contraseña original.
+尚未完成雲端備份|No cloud backup completed yet|クラウドバックアップはまだ完了していません|완료된 클라우드 백업이 없습니다|Aún no se ha completado ninguna copia en la nube
+上次成功備份：%1$s|Last successful backup: %1$s|前回のバックアップ成功：%1$s|마지막 백업 성공: %1$s|Última copia correcta: %1$s
+重新整理備份狀態|Refresh backup status|バックアップ状態を更新|백업 상태 새로고침|Actualizar estado de copia
+中斷 Google 連結|Disconnect Google|Google との接続を解除|Google 연결 해제|Desconectar Google
+備份密碼請自行保存。換手機、重裝或忘記密碼時，只有輸入原密碼才能還原雲端檔案。|Keep your backup password safe. After changing phones or reinstalling, cloud files can only be restored with that password.|バックアップのパスワードを大切に保管してください。機種変更や再インストール後の復元には元のパスワードが必要です。|백업 암호를 안전하게 보관하세요. 기기 변경이나 재설치 후에는 원래 암호가 있어야 복원할 수 있습니다.|Guarda bien la contraseña de la copia. Tras cambiar de teléfono o reinstalar, solo podrás restaurar los archivos con ella.
+隱私權政策|Privacy policy|プライバシーポリシー|개인정보처리방침|Política de privacidad
+小小筆記隱私權政策|小小筆記 privacy policy|小小筆記 プライバシーポリシー|小小筆記 개인정보처리방침|Política de privacidad de 小小筆記
+沒有 Google 授權視窗|No Google authorization screen|Google の承認画面がありません|Google 승인 화면이 없습니다|No hay pantalla de autorización de Google
+無法開啟 Google 登入畫面|Could not open Google sign-in|Google ログイン画面を開けません|Google 로그인 화면을 열 수 없습니다|No se pudo abrir el inicio de sesión de Google
+無法連接 Google，請檢查網路與 Google Play 服務|Could not connect to Google. Check your network and Google Play services.|Google に接続できません。通信状態と Google Play 開発者サービスをご確認ください。|Google에 연결할 수 없습니다. 네트워크와 Google Play 서비스를 확인하세요.|No se pudo conectar a Google. Comprueba la red y los servicios de Google Play.
+這台裝置無法使用 Google 登入|Google sign-in is unavailable on this device|この端末では Google ログインを利用できません|이 기기에서는 Google 로그인을 사용할 수 없습니다|Google no está disponible en este dispositivo
+已取消 Google 授權|Google authorization canceled|Google の承認をキャンセルしました|Google 승인을 취소했습니다|Autorización de Google cancelada
+Google 授權未完成，請重試|Google authorization did not finish. Try again.|Google の承認が完了しませんでした。再試行してください。|Google 승인이 완료되지 않았습니다. 다시 시도하세요.|La autorización de Google no terminó. Inténtalo de nuevo.
+請同意小小筆記存取自己建立的 Drive 備份檔|Allow 小小筆記 to access the Drive backups it creates.|小小筆記 が作成するドライブのバックアップへのアクセスを許可してください。|小小筆記에서 만든 Drive 백업 파일에 대한 접근을 허용하세요.|Permite que 小小筆記 acceda a las copias que crea en Drive.
+Google 未提供 Drive 授權，請重試|Google did not grant Drive access. Try again.|Google ドライブへのアクセスが許可されませんでした。再試行してください。|Google이 Drive 접근 권한을 부여하지 않았습니다. 다시 시도하세요.|Google no concedió acceso a Drive. Inténtalo de nuevo.
+設定雲端備份密碼|Set cloud backup password|クラウドバックアップのパスワードを設定|클라우드 백업 암호 설정|Crear contraseña de copia en la nube
+至少 5 個字元。每份雲端備份都會加密；換手機還原時必須輸入這個密碼，忘記就無法還原。|At least 5 characters. Every cloud backup is encrypted. You will need this password to restore on another phone; if you forget it, restoration is impossible.|5文字以上。クラウドバックアップはすべて暗号化されます。別の端末での復元にはこのパスワードが必要です。忘れると復元できません。|5자 이상. 모든 클라우드 백업은 암호화됩니다. 다른 기기에서 복원하려면 이 암호가 필요하며 잊으면 복원할 수 없습니다.|Al menos 5 caracteres. Todas las copias se cifran. Necesitarás esta contraseña para restaurar en otro teléfono; si la olvidas, no podrás hacerlo.
+已連接 Google Drive，首次備份已排入|Google Drive connected. First backup queued.|Google ドライブに接続しました。最初のバックアップを予約しました。|Google Drive가 연결되었습니다. 첫 백업이 예약되었습니다.|Google Drive conectado. Primera copia programada.
+無法啟用雲端備份，請重試|Could not enable cloud backup. Try again.|クラウドバックアップを有効にできません。再試行してください。|클라우드 백업을 켤 수 없습니다. 다시 시도하세요.|No se pudo activar la copia en la nube. Inténtalo de nuevo.
+正在讀取雲端備份|Loading cloud backups|クラウドバックアップを読み込み中|클라우드 백업 불러오는 중|Cargando copias de la nube
+這個 Google 帳號沒有小小筆記雲端備份|No 小小筆記 backups were found in this Google account.|この Google アカウントに小小筆記のバックアップはありません。|이 Google 계정에 小小筆記 백업이 없습니다.|No hay copias de 小小筆記 en esta cuenta de Google.
+無法讀取雲端備份，請檢查 Google Drive 連線|Could not read cloud backups. Check your Google Drive connection.|クラウドバックアップを読み込めません。Google ドライブへの接続をご確認ください。|클라우드 백업을 읽을 수 없습니다. Google Drive 연결을 확인하세요.|No se pudieron leer las copias. Comprueba la conexión con Google Drive.
+選擇要還原的備份|Choose a backup to restore|復元するバックアップを選択|복원할 백업 선택|Elige una copia para restaurar
+輸入雲端備份密碼|Enter cloud backup password|クラウドバックアップのパスワードを入力|클라우드 백업 암호 입력|Introduce la contraseña de la copia
+正在還原雲端備份|Restoring cloud backup|クラウドバックアップを復元中|클라우드 백업 복원 중|Restaurando copia de la nube
+雲端還原失敗：密碼錯誤、檔案損壞或網路中斷|Cloud restore failed: wrong password, damaged file, or network interruption|クラウドの復元に失敗：パスワード違い、ファイル破損、または通信エラー|클라우드 복원 실패: 암호 오류, 파일 손상 또는 네트워크 중단|Falló la restauración: contraseña incorrecta, archivo dañado o error de red
+中斷 Google 連結？|Disconnect Google?|Google との接続を解除しますか？|Google 연결을 해제할까요?|¿Desconectar Google?
+停止自動備份並清除這台裝置保存的備份密碼。Drive 裡已建立的加密備份檔會保留。|Auto backup will stop and the saved password will be cleared from this device. Encrypted Drive backups will remain.|自動バックアップを停止し、この端末に保存されたパスワードを消去します。ドライブ上の暗号化ファイルは残ります。|자동 백업을 중지하고 이 기기에 저장된 암호를 지웁니다. Drive의 암호화된 백업은 남습니다.|Se detendrá la copia automática y se borrará la contraseña de este dispositivo. Las copias cifradas seguirán en Drive.
+中斷連結|Disconnect|接続解除|연결 해제|Desconectar
+本機已停止備份；Google 授權移除失敗，可至 Google 帳號設定檢查|Local backup stopped, but Google access could not be revoked. Check your Google account settings.|この端末でのバックアップは停止しましたが、Google の承認を取り消せませんでした。アカウント設定をご確認ください。|이 기기의 백업은 중지했지만 Google 승인을 취소하지 못했습니다. 계정 설정을 확인하세요.|La copia local se detuvo, pero no se pudo revocar el acceso de Google. Revisa los ajustes de tu cuenta.
+無法中斷連結，請重試|Could not disconnect. Try again.|接続を解除できません。再試行してください。|연결을 해제할 수 없습니다. 다시 시도하세요.|No se pudo desconectar. Inténtalo de nuevo.
+請重新連接 Google 帳號並確認備份密碼|Reconnect Google and check your backup password.|Google に再接続し、バックアップのパスワードを確認してください。|Google 계정을 다시 연결하고 백업 암호를 확인하세요.|Vuelve a conectar Google y comprueba la contraseña de copia.
+Google Drive 權限不足，請重新登入|Google Drive permission is missing. Sign in again.|Google ドライブの権限がありません。再度ログインしてください。|Google Drive 권한이 부족합니다. 다시 로그인하세요.|Falta el permiso de Google Drive. Inicia sesión de nuevo.
+Google Drive 備份失敗（%1$d），請稍後重試|Google Drive backup failed (%1$d). Try again later.|Google ドライブのバックアップに失敗（%1$d）。後で再試行してください。|Google Drive 백업 실패(%1$d). 나중에 다시 시도하세요.|Falló la copia en Google Drive (%1$d). Inténtalo más tarde.
+備份未完成，請確認網路與 Google 帳號狀態|Backup incomplete. Check your network and Google account.|バックアップが完了しませんでした。通信状態と Google アカウントをご確認ください。|백업이 완료되지 않았습니다. 네트워크와 Google 계정을 확인하세요.|Copia incompleta. Comprueba la red y la cuenta de Google.
+系統無法排入自動備份|The system could not schedule auto backup.|自動バックアップを予約できません。|시스템에서 자동 백업을 예약할 수 없습니다.|El sistema no pudo programar la copia automática.
+✦  筆記|✦  Notes|✦  メモ|✦  메모|✦  Notas
+☺  個人|☺  Profile|☺  プロフィール|☺  프로필|☺  Perfil
+筆記頁|Notes tab|メモのタブ|메모 탭|Pestaña de notas
+個人與設定頁|Profile and settings tab|プロフィールと設定のタブ|프로필 및 설정 탭|Pestaña de perfil y ajustes
+放一篇筆記在桌面|Put a note on your home screen|ホーム画面にメモを置く|홈 화면에 메모 놓기|Pon una nota en inicio
+每個小工具都能選不同的筆記。|Each widget can show a different note.|ウィジェットごとに別のメモを表示できます。|위젯마다 다른 메모를 표시할 수 있습니다.|Cada widget puede mostrar una nota distinta.
+設定未能儲存，請重試|Could not save the setting. Try again.|設定を保存できません。再試行してください。|설정을 저장할 수 없습니다. 다시 시도하세요.|No se pudo guardar el ajuste. Inténtalo de nuevo.
+還沒有筆記，先寫一篇吧。|No notes yet. Write one first.|まだメモがありません。まず一つ書いてみましょう。|아직 메모가 없습니다. 먼저 하나 써 보세요.|Aún no hay notas. Escribe una primero.
+＋ 建立新筆記|＋ Create note|＋ 新しいメモを作成|＋ 새 메모 만들기|＋ Crear nota
+🔒 加密筆記\n點一下輸入密碼|🔒 Encrypted note\nTap to enter password|🔒 暗号化されたメモ\nタップしてパスワードを入力|🔒 암호화된 메모\n탭하여 암호 입력|🔒 Nota cifrada\nToca para introducir la contraseña
+選一篇筆記，放在這裡陪你。\n點一下開始選擇|Choose a note for this widget.\nTap to get started.|ここに表示するメモを選びましょう。\nタップして選択します。|여기에 표시할 메모를 선택하세요.\n탭하여 시작하세요.|Elige una nota para este widget.\nToca para empezar.
+這篇筆記已刪除。\n點一下重新選擇|This note was deleted.\nTap to choose another.|このメモは削除されました。\nタップして選び直してください。|이 메모는 삭제되었습니다.\n탭하여 다시 선택하세요.|Esta nota se eliminó.\nToca para elegir otra.
+已完成，點一下取消：%1$s|Done, tap to undo: %1$s|完了、タップして取り消し：%1$s|완료됨, 탭하여 취소: %1$s|Completado, toca para deshacer: %1$s
+未完成，點一下勾選：%1$s|Not done, tap to check: %1$s|未完了、タップしてチェック：%1$s|미완료, 탭하여 체크: %1$s|Pendiente, toca para marcar: %1$s
+編輯|Edit|編集|편집|Editar
+換筆記|Change note|メモを変更|메모 변경|Cambiar nota
+小工具設定儲存失敗|Could not save widget settings|ウィジェット設定を保存できません|위젯 설정을 저장할 수 없습니다|No se pudo guardar el widget
+無法寫入選擇的檔案|Could not write the selected file|選択したファイルに書き込めません|선택한 파일에 쓸 수 없습니다|No se pudo escribir el archivo elegido
+無法讀取備份檔|Could not read the backup file|バックアップファイルを読み込めません|백업 파일을 읽을 수 없습니다|No se pudo leer el archivo de copia
+預覽已過期|Preview expired|プレビューの期限が切れました|미리보기가 만료되었습니다|La vista previa caducó

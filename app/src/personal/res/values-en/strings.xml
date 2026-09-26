@@ -1,0 +1,9 @@
+<resources>
+    <string name="widget_description">Scrollable personal note with private stickers, colorful glow, and custom backgrounds.</string>
+    <string name="sticker_picker_title">Private character stickers</string>
+    <string name="sticker_picker_count">%1$d private stickers · remove with the text</string>
+    <string name="sticker_content_description">Private sticker %1$d</string>
+    <string name="sticker_source_title">Private sticker sources and help</string>
+    <string name="sticker_source_message">Long-press an empty home screen spot → Widgets → 小小筆記. Choose a note, then long-press to resize.\n\nText tools: select text to apply colors, rainbow, or glow. With no selection, the effect applies to the whole note. Background fade only affects the background.\n\nBuilt-in sticker source: SigStick Hololive Walfie GIF plus 2021 (credited to Walfie -K). Character rights belong to their respective owners. This is an unofficial app. The asset license chain has not been independently verified; these materials are for this private version only.</string>
+    <string name="sticker_source_action">View sticker source</string>
+</resources>

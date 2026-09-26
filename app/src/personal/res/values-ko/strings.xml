@@ -1,0 +1,9 @@
+<resources>
+    <string name="widget_description">개인 스티커, 다채로운 빛 효과, 맞춤 배경을 갖춘 스크롤 가능한 개인 메모입니다.</string>
+    <string name="sticker_picker_title">개인 캐릭터 스티커</string>
+    <string name="sticker_picker_count">개인 스티커 %1$d개 · 글자와 함께 삭제 가능</string>
+    <string name="sticker_content_description">개인 스티커 %1$d</string>
+    <string name="sticker_source_title">개인 스티커 출처 및 도움말</string>
+    <string name="sticker_source_message">홈 화면 빈 곳을 길게 누르기 → 위젯 → 小小筆記. 메모를 고른 뒤 길게 눌러 크기를 조절하세요.\n\n글자 도구: 글자를 선택해 색상, 무지개, 빛 효과를 적용합니다. 선택하지 않으면 전체 메모에 적용됩니다. 배경 흐리기는 배경에만 영향을 줍니다.\n\n내장 스티커 출처: SigStick Hololive Walfie GIF plus 2021(Walfie -K 표기). 캐릭터 권리는 각 권리자에게 있습니다. 이 앱은 비공식입니다. 소재의 라이선스 경로는 독립적으로 확인되지 않았으며 이 개인 버전에서만 사용합니다.</string>
+    <string name="sticker_source_action">스티커 출처 보기</string>
+</resources>

@@ -12,6 +12,8 @@ import android.widget.RemoteViews
 import tw.local.memonote.*
 import tw.local.memonote.data.NoteStore
 import tw.local.memonote.rich.NoteRenderer
+import tw.local.memonote.ui.AppLanguage
+import tw.local.memonote.ui.localizedDisplayTitle
 
 class NoteWidgetProvider: AppWidgetProvider() {
     override fun onReceive(context: Context,intent: Intent) {
@@ -44,7 +46,7 @@ class NoteWidgetProvider: AppWidgetProvider() {
                 val manager=AppWidgetManager.getInstance(context)
                 val note=NoteStore(context).use { it.find(noteId(context,id)) }
                 val views=RemoteViews(context.packageName,R.layout.note_widget)
-                views.setTextViewText(R.id.widget_title,note?.displayTitle ?: "小小筆記")
+                views.setTextViewText(R.id.widget_title,note?.localizedDisplayTitle(context) ?: context.getString(R.string.app_name))
                 val configure=Intent(context,WidgetConfigActivity::class.java).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id)
                 views.setOnClickPendingIntent(R.id.widget_choose,PendingIntent.getActivity(context,id*2,configure,PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
                 val messageTarget=if(note?.isLocked==true) Intent(context,EditorActivity::class.java).putExtra("noteId",note.id) else configure
@@ -54,9 +56,11 @@ class NoteWidgetProvider: AppWidgetProvider() {
                 views.setViewVisibility(R.id.widget_edit,if(note==null || note.isLocked) View.GONE else View.VISIBLE)
                 views.setViewVisibility(R.id.widget_list,if(note==null || note.isLocked) View.GONE else View.VISIBLE)
                 views.setViewVisibility(R.id.widget_message,if(note==null || note.isLocked) View.VISIBLE else View.GONE)
-                views.setTextViewText(R.id.widget_message,if(note?.isLocked==true) "🔒 加密筆記\n點一下輸入密碼" else if(noteId(context,id)==0L) "選一篇筆記，放在這裡陪你。\n點一下開始選擇" else "這篇筆記已刪除。\n點一下重新選擇")
+                views.setTextViewText(R.id.widget_message,AppLanguage.text(context,if(note?.isLocked==true) "🔒 加密筆記\n點一下輸入密碼" else if(noteId(context,id)==0L) "選一篇筆記，放在這裡陪你。\n點一下開始選擇" else "這篇筆記已刪除。\n點一下重新選擇"))
                 val width=widthDp(context,id); val height=manager.getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT,400).coerceIn(100,1000)
                 val bw=width.coerceAtMost(360); val bh=(height.toFloat()/width*bw).toInt().coerceIn(100,800)
+                views.setTextViewText(R.id.widget_edit,AppLanguage.text(context,"編輯"))
+                views.setTextViewText(R.id.widget_choose,AppLanguage.text(context,"換筆記"))
                 views.setImageViewBitmap(R.id.widget_background,NoteRenderer.background(context,note?.background ?: "paper",note?.fade ?: 35,bw,bh))
                 views.setRemoteAdapter(R.id.widget_list,Intent(context,NoteWidgetService::class.java).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id).setData(Uri.parse("memonote://widget/$id")))
                 val toggle=Intent(context,NoteWidgetProvider::class.java).setAction(ACTION_TOGGLE).setData(Uri.parse("memonote://toggle/$id")).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id)

@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 
 object PasswordDialogs {
     private fun input(activity: Activity, hint: String): EditText = EditText(activity).apply {
-        this.hint = hint
+        this.hint = AppLanguage.text(activity, hint)
         inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         filters = arrayOf(android.text.InputFilter.LengthFilter(128))
         isSingleLine = true
@@ -30,23 +30,23 @@ object PasswordDialogs {
         container.addView(first)
         val second = if (confirm) input(activity, "再次輸入密碼").also { container.addView(it) } else null
         val dialog = AlertDialog.Builder(activity)
-            .setTitle(title)
-            .setMessage(warning)
+            .setTitle(AppLanguage.text(activity, title))
+            .setMessage(AppLanguage.text(activity, warning))
             .setView(container)
-            .setNegativeButton("取消", null)
-            .setPositiveButton("確定", null)
+            .setNegativeButton(AppLanguage.text(activity, "取消"), null)
+            .setPositiveButton(AppLanguage.text(activity, "確定"), null)
             .create()
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val password = first.text.toString().toCharArray()
                 val minimum = if (confirm) 5 else 1
                 if (password.size < minimum) {
-                    first.error = if (confirm) "請設定至少 5 個字元" else "請輸入密碼"
+                    first.error = AppLanguage.text(activity, if (confirm) "請設定至少 5 個字元" else "請輸入密碼")
                     password.fill('\u0000')
                     return@setOnClickListener
                 }
                 if (second != null && !password.contentEquals(second.text.toString().toCharArray())) {
-                    second.error = "兩次密碼不同"
+                    second.error = AppLanguage.text(activity, "兩次密碼不同")
                     password.fill('\u0000')
                     return@setOnClickListener
                 }

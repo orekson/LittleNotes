@@ -3,6 +3,8 @@ package tw.local.memonote
 import android.app.*
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
+import tw.local.memonote.ui.LocalizedActivity
+import tw.local.memonote.ui.AppLanguage
 import android.os.Bundle
 import android.text.*
 import android.view.*
@@ -14,7 +16,7 @@ import tw.local.memonote.rich.*
 import tw.local.memonote.ui.*
 import tw.local.memonote.widget.NoteWidgetProvider
 
-class EditorActivity: Activity() {
+class EditorActivity: LocalizedActivity() {
     private lateinit var categoryInput: EditText
     private var vaultPassword: CharArray? = null
     private var vaultSession: String? = null
@@ -61,7 +63,7 @@ class EditorActivity: Activity() {
     private fun askUnlock(stored: Note,state: Bundle?) {
         PasswordDialogs.ask(this,"解鎖筆記","密碼只用於解鎖這篇筆記；忘記密碼就無法還原。",false) { password ->
             val session = java.util.UUID.randomUUID().toString()
-            val progress = AlertDialog.Builder(this).setTitle("正在解鎖")
+            val progress = AlertDialog.Builder(this).setTitle(AppLanguage.text(this, "正在解鎖"))
                 .setView(ProgressBar(this)).setCancelable(false).create()
             progress.show()
             Thread {
@@ -100,23 +102,23 @@ class EditorActivity: Activity() {
         bar.addView(Ui.button(this,"儲存",true) { save() }); root.addView(bar)
         val scroll=ScrollView(this).apply { isFillViewport=true }
         val content=Ui.column(this); Ui.pad(content,20); scroll.addView(content); root.addView(scroll,LinearLayout.LayoutParams(-1,0,1f))
-        titleInput=EditText(this).apply { isSaveEnabled=false; hint="給這篇筆記一個名字"; textSize=24f; setTextColor(Ui.ink); backgroundTintList=android.content.res.ColorStateList.valueOf(Ui.purple); isSingleLine=true; filters=arrayOf(InputFilter.LengthFilter(160)); setText(note.title) }
+        titleInput=EditText(this).apply { isSaveEnabled=false; hint=AppLanguage.text(this@EditorActivity,"給這篇筆記一個名字"); textSize=24f; setTextColor(Ui.ink); backgroundTintList=android.content.res.ColorStateList.valueOf(Ui.purple); isSingleLine=true; filters=arrayOf(InputFilter.LengthFilter(160)); setText(note.title) }
         content.addView(titleInput)
         categoryInput=EditText(this).apply {
-            isSaveEnabled=false; hint="分類（可留空）"; textSize=15f; setTextColor(Ui.ink)
+            isSaveEnabled=false; hint=AppLanguage.text(this@EditorActivity,"分類（可留空）"); textSize=15f; setTextColor(Ui.ink)
             isSingleLine=true; filters=arrayOf(InputFilter.LengthFilter(80)); setText(note.category)
         }
         content.addView(categoryInput); content.addView(Ui.space(this,10))
         val tools=Ui.row(this)
         val colors=listOf("墨" to 0xff302b3e.toInt(),"莓" to 0xffd43375.toInt(),"紫" to 0xff8440cc.toInt(),"藍" to 0xff2371c7.toInt(),"綠" to 0xff10846f.toInt(),"金" to 0xffb2730a.toInt(),"白" to 0xffffffff.toInt())
-        colors.forEach { (name,color) -> tools.addView(Ui.button(this,name) { format { it.copy(color=color,rainbow=false) } }.apply { setTextColor(color); contentDescription="文字顏色：$name" },LinearLayout.LayoutParams(Ui.dp(this,54),-2)) }
+        colors.forEach { (name,color) -> tools.addView(Ui.button(this,name) { format { it.copy(color=color,rainbow=false) } }.apply { setTextColor(color); contentDescription=AppLanguage.format(this@EditorActivity,"文字顏色：%1\$s",AppLanguage.text(this@EditorActivity,name)) },LinearLayout.LayoutParams(Ui.dp(this,54),-2)) }
         tools.addView(Ui.button(this,"彩虹") { format { it.copy(rainbow=true) } })
         tools.addView(Ui.button(this,"柔光") { format { it.copy(glow=true) } })
         tools.addView(Ui.button(this,"關閉柔光") { format { it.copy(glow=false) } })
         tools.addView(Ui.button(this,"清除樣式") { format { TextStyle() } })
         paper=Ui.column(this); Ui.pad(paper,8)
         body=EditText(this).apply {
-            hint="今天，有什麼想留下的呢？"; textSize=16f; setTextColor(Ui.ink); setHintTextColor(Ui.muted)
+            hint=AppLanguage.text(this@EditorActivity,"今天，有什麼想留下的呢？"); textSize=16f; setTextColor(Ui.ink); setHintTextColor(Ui.muted)
             gravity=Gravity.TOP; minHeight=Ui.dp(this@EditorActivity,300); background=null
             inputType=android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
             filters=arrayOf(InputFilter.LengthFilter(100000))
@@ -211,11 +213,11 @@ class EditorActivity: Activity() {
         listOf("奶油" to "paper","櫻花" to "sakura","海風" to "ocean","星夜" to "night").forEach { (label,ref) -> backgrounds.addView(Ui.button(this,label) { background=ref; refreshBackground() },LinearLayout.LayoutParams(0,-2,1f)) }
         content.addView(backgrounds)
         content.addView(Ui.button(this,"從手機選擇背景圖片") { pickImage(11) })
-        val fadeText=Ui.label(this,"背景淡化  $fade%",13f,Ui.muted); content.addView(fadeText)
+        val fadeText=Ui.label(this,AppLanguage.format(this,"背景淡化  %1\$d%%",fade),13f,Ui.muted); content.addView(fadeText)
         content.addView(SeekBar(this).apply {
-            max=100; progress=fade; contentDescription="背景淡化程度"
+            max=100; progress=fade; contentDescription=AppLanguage.text(this@EditorActivity,"背景淡化程度")
             setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(s: SeekBar?,p: Int,user: Boolean) { fade=p; fadeText.text="背景淡化  $fade%"; if(user) refreshBackground() }
+                override fun onProgressChanged(s: SeekBar?,p: Int,user: Boolean) { fade=p; fadeText.text=AppLanguage.format(this@EditorActivity,"背景淡化  %1\$d%%",fade); if(user) refreshBackground() }
                 override fun onStartTrackingTouch(s: SeekBar?)=Unit
                 override fun onStopTrackingTouch(s: SeekBar?)=Unit
             })
@@ -274,7 +276,7 @@ class EditorActivity: Activity() {
         super.onActivityResult(request,result,data)
         if(result!=RESULT_OK || data?.data==null) return
         try { val ref=ImageFiles.import(this,data.data!!,request==12,vaultSession); when(request) { 12->insertSticker(ref); 13->ImageSizeDialog.show(this,ref,220) { insertPhoto(ref,it) }; else->{ background=ref; refreshBackground() } } }
-        catch(e: Exception) { Ui.toast(this,"圖片匯入失敗：${e.message ?: "請換一張圖片"}") }
+        catch(e: Exception) { Ui.toast(this,AppLanguage.format(this,"圖片匯入失敗：%1\$s",AppLanguage.text(this,e.message ?: "請換一張圖片"))) }
     }
     private fun refreshBackground() {
         if(paper.width<=0) return
@@ -297,7 +299,7 @@ class EditorActivity: Activity() {
         if(note.title.isBlank() && note.body.isBlank() && note.id==0L) { Ui.toast(this,"先寫下標題或內容吧"); return }
         val password=vaultPassword
         if(password!=null) {
-            val progress=AlertDialog.Builder(this).setTitle("正在儲存加密筆記")
+            val progress=AlertDialog.Builder(this).setTitle(AppLanguage.text(this, "正在儲存加密筆記"))
                 .setView(ProgressBar(this)).setCancelable(false).create()
             progress.show()
             Thread {
@@ -318,12 +320,12 @@ class EditorActivity: Activity() {
         try { val id=NoteStore(this).use { it.saveFromEditor(original,note) }; original=note.copy(id=id); NoteWidgetProvider.updateAll(this); setResult(RESULT_OK,Intent().putExtra("noteId",id)); Ui.toast(this,"已儲存，桌面筆記已更新"); finish() }
         catch(e: Exception) { Ui.toast(this,"儲存失敗，輸入內容已保留，請重試") }
     }
-    private fun delete() { AlertDialog.Builder(this).setTitle("刪除這篇筆記？").setMessage("桌面上顯示這篇的小工具會提示重新選擇筆記。").setNegativeButton("保留",null).setPositiveButton("刪除") { _,_->
+    private fun delete() { AlertDialog.Builder(this).setTitle(AppLanguage.text(this, "刪除這篇筆記？")).setMessage(AppLanguage.text(this, "桌面上顯示這篇的小工具會提示重新選擇筆記。")).setNegativeButton(AppLanguage.text(this, "保留"),null).setPositiveButton(AppLanguage.text(this, "刪除")) { _,_->
         try { NoteStore(this).use { it.delete(original.id) }; NoteWidgetProvider.updateAll(this); finish() } catch(e: Exception) { Ui.toast(this,"刪除失敗，請重試") }
     }.show() }
     private fun leave() {
         if(!ready || !changed()) { finish(); return }
-        AlertDialog.Builder(this).setTitle("要儲存這次修改嗎？").setPositiveButton("儲存") { _,_-> save() }.setNegativeButton("捨棄") { _,_-> finish() }.setNeutralButton("繼續編輯",null).show()
+        AlertDialog.Builder(this).setTitle(AppLanguage.text(this, "要儲存這次修改嗎？")).setPositiveButton(AppLanguage.text(this, "儲存")) { _,_-> save() }.setNegativeButton(AppLanguage.text(this, "捨棄")) { _,_-> finish() }.setNeutralButton(AppLanguage.text(this, "繼續編輯"),null).show()
     }
     override fun onBackPressed()=leave()
     override fun onSaveInstanceState(out: Bundle) {

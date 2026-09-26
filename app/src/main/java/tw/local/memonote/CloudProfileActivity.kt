@@ -1,9 +1,11 @@
 package tw.local.memonote
 
 import android.accounts.Account
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import tw.local.memonote.ui.LocalizedActivity
+import tw.local.memonote.ui.LanguageSwitcher
+import tw.local.memonote.ui.AppLanguage
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -24,9 +26,8 @@ import tw.local.memonote.ui.Ui
 import tw.local.memonote.widget.NoteWidgetProvider
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
-class CloudProfileActivity : Activity() {
+class CloudProfileActivity : LocalizedActivity() {
     private companion object {
         const val GOOGLE_AUTH = 503
         const val CONNECT = 1
@@ -56,7 +57,11 @@ class CloudProfileActivity : Activity() {
         Ui.pad(content, 24)
         scroll.addView(content)
         root.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
-        content.addView(Ui.label(this, "個人與設定", 30f, bold = true))
+        val titleRow = Ui.row(this)
+        titleRow.addView(Ui.label(this, "個人與設定", 30f, bold = true),
+            LinearLayout.LayoutParams(0, -2, 1f))
+        LanguageSwitcher.add(this, titleRow)
+        content.addView(titleRow)
         content.addView(Ui.space(this, 10))
         content.addView(Ui.label(this, "Google Drive 自動備份", 21f, bold = true))
         content.addView(Ui.space(this, 8))
@@ -64,7 +69,7 @@ class CloudProfileActivity : Activity() {
         val linked = CloudBackupState.connected(this)
         val account = CloudBackupState.account(this)
         content.addView(Ui.label(this,
-            if (linked) "已連結 Google Drive" + if (account.isBlank()) "" else " · " + account
+            if (linked) AppLanguage.text(this, "已連結 Google Drive") + if (account.isBlank()) "" else " · " + account
             else "尚未連結 Google 帳號",
             15f, Ui.muted))
         content.addView(Ui.space(this, 10))
@@ -95,21 +100,25 @@ class CloudProfileActivity : Activity() {
                 Ui.toast(this, "已排入雲端備份，請稍後查看狀態")
             })
             content.addView(Ui.button(this, "從 Google Drive 還原") {
-                AlertDialog.Builder(this).setTitle("從雲端還原筆記？")
-                    .setMessage("選取的備份會新增到這台裝置；現有筆記不會被覆蓋。需要當初設定的備份密碼。")
-                    .setNegativeButton("取消", null)
-                    .setPositiveButton("繼續") { _, _ -> authorize(RESTORE) }
+                AlertDialog.Builder(this).setTitle(AppLanguage.text(this, "從雲端還原筆記？"))
+                    .setMessage(AppLanguage.text(this, "選取的備份會新增到這台裝置；現有筆記不會被覆蓋。需要當初設定的備份密碼。"))
+                    .setNegativeButton(AppLanguage.text(this, "取消"), null)
+                    .setPositiveButton(AppLanguage.text(this, "繼續")) { _, _ -> authorize(RESTORE) }
                     .show()
             })
             val last = CloudBackupState.lastSuccess(this)
             val text = if (last == 0L) "尚未完成雲端備份"
-            else "上次成功備份：" + SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.TAIWAN)
-                .format(Date(last))
+            else AppLanguage.format(this, "上次成功備份：%1\$s", SimpleDateFormat("yyyy/MM/dd HH:mm", AppLanguage.locale(this))
+                .format(Date(last)))
             content.addView(Ui.space(this, 12))
             content.addView(Ui.label(this, text, 14f, Ui.ink))
             val problem = CloudBackupState.problem(this)
             if (problem.isNotBlank()) {
-                content.addView(Ui.label(this, problem, 13f, 0xffb64453.toInt()))
+                val http = Regex("Google Drive 備份失敗（([0-9]+)），請稍後重試").matchEntire(problem)
+                val displayProblem = if (http != null) AppLanguage.format(this,
+                    "Google Drive 備份失敗（%1\$d），請稍後重試", http.groupValues[1].toInt())
+                else AppLanguage.text(this, problem)
+                content.addView(Ui.label(this, displayProblem, 13f, 0xffb64453.toInt()))
             }
             content.addView(Ui.button(this, "重新整理備份狀態") { showProfile() })
             content.addView(Ui.button(this, "中斷 Google 連結") { confirmDisconnect() })
@@ -119,11 +128,11 @@ class CloudProfileActivity : Activity() {
             13f, Ui.muted))
         content.addView(Ui.space(this, 20))
         content.addView(Ui.button(this, "隱私權政策") {
-            val policy = assets.open("privacy_policy_zh.txt").bufferedReader().use { it.readText() }
+            val policy = assets.open("i18n/privacy_" + AppLanguage.code(this) + ".txt").bufferedReader().use { it.readText() }
             AlertDialog.Builder(this)
-                .setTitle("小小筆記隱私權政策")
+                .setTitle(AppLanguage.text(this, "小小筆記隱私權政策"))
                 .setMessage(policy)
-                .setPositiveButton("關閉", null)
+                .setPositiveButton(AppLanguage.text(this, "關閉"), null)
                 .show()
         })
         content.addView(Ui.space(this, 12))
@@ -235,7 +244,7 @@ class CloudProfileActivity : Activity() {
         val items = backups.map { backup ->
             backup.createdTime.replace('T', ' ').take(16).ifBlank { backup.name }
         }.toTypedArray()
-        AlertDialog.Builder(this).setTitle("選擇要還原的備份")
+        AlertDialog.Builder(this).setTitle(AppLanguage.text(this, "選擇要還原的備份"))
             .setItems(items) { _, index ->
                 val remote = backups[index]
                 PasswordDialogs.ask(
@@ -252,20 +261,20 @@ class CloudProfileActivity : Activity() {
                     }) { restored ->
                         restored.onSuccess {
                             NoteWidgetProvider.updateAll(this)
-                            Ui.toast(this, "已還原 " + it + " 篇筆記")
+                            Ui.toast(this, AppLanguage.format(this, "已還原 %1\$d 篇筆記", it))
                         }.onFailure {
                             Ui.toast(this, "雲端還原失敗：密碼錯誤、檔案損壞或網路中斷")
                         }
                     }
                 }
-            }.setNegativeButton("取消", null).show()
+            }.setNegativeButton(AppLanguage.text(this, "取消"), null).show()
     }
 
     private fun confirmDisconnect() {
-        AlertDialog.Builder(this).setTitle("中斷 Google 連結？")
-            .setMessage("停止自動備份並清除這台裝置保存的備份密碼。Drive 裡已建立的加密備份檔會保留。")
-            .setNegativeButton("取消", null)
-            .setPositiveButton("中斷連結") { _, _ ->
+        AlertDialog.Builder(this).setTitle(AppLanguage.text(this, "中斷 Google 連結？"))
+            .setMessage(AppLanguage.text(this, "停止自動備份並清除這台裝置保存的備份密碼。Drive 裡已建立的加密備份檔會保留。"))
+            .setNegativeButton(AppLanguage.text(this, "取消"), null)
+            .setPositiveButton(AppLanguage.text(this, "中斷連結")) { _, _ ->
                 val account = CloudBackupState.account(this)
                 try {
                     CloudBackupState.disconnect(this)
@@ -286,7 +295,7 @@ class CloudProfileActivity : Activity() {
     }
 
     private fun <T> work(label: String, action: () -> T, finish: (Result<T>) -> Unit) {
-        val progress = AlertDialog.Builder(this).setTitle(label)
+        val progress = AlertDialog.Builder(this).setTitle(AppLanguage.text(this, label))
             .setView(ProgressBar(this)).setCancelable(false).create()
         progress.show()
         Thread {

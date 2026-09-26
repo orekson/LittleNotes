@@ -1,0 +1,9 @@
+<resources>
+    <string name="widget_description">プライベートステッカー、色付きの光彩、カスタム背景に対応したスクロール可能な個人メモ。</string>
+    <string name="sticker_picker_title">個人用キャラクターステッカー</string>
+    <string name="sticker_picker_count">%1$d 枚の個人用ステッカー · 文字と一緒に削除できます</string>
+    <string name="sticker_content_description">個人用ステッカー %1$d</string>
+    <string name="sticker_source_title">個人用ステッカーの出典と使い方</string>
+    <string name="sticker_source_message">ホーム画面の空白を長押し → ウィジェット → 小小筆記。メモを選び、長押ししてサイズを調整します。\n\n文字ツール：文字を選択して色、レインボー、光彩を適用します。未選択ならメモ全体に適用します。背景の淡さは背景だけに影響します。\n\n内蔵ステッカーの出典：SigStick Hololive Walfie GIF plus 2021（Walfie -K 名義）。キャラクターの権利は各権利者に帰属します。本アプリは非公式です。素材のライセンス経路は独自に確認しておらず、この個人版専用です。</string>
+    <string name="sticker_source_action">素材の出典を見る</string>
+</resources>

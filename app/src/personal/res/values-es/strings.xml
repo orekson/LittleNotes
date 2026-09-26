@@ -1,0 +1,9 @@
+<resources>
+    <string name="widget_description">Nota personal desplazable con pegatinas privadas, texto de colores y fondos personalizados.</string>
+    <string name="sticker_picker_title">Pegatinas privadas de personajes</string>
+    <string name="sticker_picker_count">%1$d pegatinas privadas · se eliminan con el texto</string>
+    <string name="sticker_content_description">Pegatina privada %1$d</string>
+    <string name="sticker_source_title">Origen de las pegatinas privadas y ayuda</string>
+    <string name="sticker_source_message">Mantén pulsada un área vacía de inicio → Widgets → 小小筆記. Elige una nota y mantén pulsado el widget para cambiar su tamaño.\n\nHerramientas de texto: selecciona texto para aplicar color, arcoíris o resplandor. Sin selección, el efecto se aplica a toda la nota. La atenuación solo afecta al fondo.\n\nOrigen de las pegatinas integradas: SigStick Hololive Walfie GIF plus 2021 (atribuido a Walfie -K). Los derechos de los personajes pertenecen a sus titulares. Esta app no es oficial. No se ha verificado de forma independiente la cadena de licencias; este material es solo para la versión privada.</string>
+    <string name="sticker_source_action">Ver origen de las pegatinas</string>
+</resources>
